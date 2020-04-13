@@ -1,0 +1,195 @@
+body {
+    background-color: whitesmoke;
+    font-family: "微软雅黑";
+}
+.searchNav{
+    height: 40px;
+    line-height: 0px;
+}
+img {
+    margin-left: 10px;
+}
+.fixed {
+    position: fixed;
+    top: 0;
+}
+#x-nav {
+    min-width: 450px;
+    background-color: ghostwhite;
+    position: relative;
+    line-height: 50px;
+    height: 50px;
+    font-weight: 700;
+    font-size: 16px;
+}
+ul {
+    list-style: none;
+    cursor: pointer;
+}
+.setting {
+    height: 30px;
+    padding-top: 0;
+    border-left: 1px solid #aaa;
+    font-size: 100%;
+    top: 10px;
+    right: 0;
+    position: absolute;
+}
+.setting li {
+    float: left;
+    padding-top: 0px;
+    margin-left: -40px;
+    width: 100px;
+    text-align: center;
+    line-height: 30px;
+}
+.setting li span {
+    font-size: 15px;
+}
+.setting li:hover {
+    color: orangered;
+}
+.searchNav {
+    min-width: 450px;
+    right: 0;
+    bottom: 0;
+    top: 50px;
+    overflow: auto;
+    width: 100%;
+    background-color: #2a3542;
+}
+.navItem {
+    height: 35px;
+}
+.navItem li {
+    margin-top: 12.5px;
+    color: white;
+    float: left;
+}
+.glyphicon {
+    font-size: 13px;
+    margin-right: 5px;
+}
+.searchNav button {
+    margin-top: -4px;
+    margin-right: 25px;
+    background-color: #fff;
+    border: none;
+    color: black;
+    cursor: pointer;
+}
+.searchNav button:hover {
+    background-color: lightgoldenrodyellow;
+}
+.searchDiv {
+    min-width: 400px;
+    margin: 15px auto;
+    width: 90%;
+    min-height: 180px;
+    background-color: #fff;
+    box-shadow: -1px 1px 5px black;
+    border-radius: 5px;
+}
+.search_box {
+    padding-top: 15px;
+    padding-left: 60px;
+}
+.search_input {
+    width: 200px;
+    height: 50px;
+    line-height: 20px;
+    margin: 10px 10px 0 0;
+    float: left;
+}
+.search_input span {
+    margin-left: 15px;
+    font-size: 13px;
+    color: #666;
+    display: inline-block;
+    float: left;
+}
+.search_input input {
+    width: 180px;
+    height: 35px;
+    border: 1px solid #dfdfdf;
+    border-radius: 3px;
+    padding: .0rem .75rem;
+    font-size: 13px;
+    color: #444;
+    line-height: 35px;
+    display: inline-block;
+}
+.search_input select {
+    width: 180px;
+    height: 35px;
+    border: 1px solid #dfdfdf;
+    border-radius: 3px padding: .0rem .75rem;
+    font-size: 13px;
+    line-height: 35px;
+    display: inline-block;
+}
+.search_input .search_btn {
+    width: 80px;
+    height: 35px;
+    font-size: 13px;
+    background: #3ea2ee;
+    border: none;
+    border-radius: 3px;
+    margin-left: 15px;
+    line-height: 1.0;
+    margin-top: 10%;
+}
+.search_submit input[type='button'] {
+    width: 80px;
+    height: 35px;
+    font-size: 13px;
+    background: #3ea2ee;
+    border: none;
+    border-radius: 3px;
+    padding: .0rem .75rem;
+    margin-left: 15px;
+    line-height: 1.0;
+}
+.search_button button:hover{
+    background: rgba(14, 75, 121, 0.64);
+}
+.checkInfo {
+    margin: 20px auto;
+    width: 95%;
+    position: relative;
+}
+.fenye {
+    position: absolute;
+    right: 0;
+    bottom: -25px;
+}
+.table th {
+    border-top: 1px solid #F0F0F0;
+    border-bottom: 1px solid #f0f0f0;
+    color: #595e66;
+    background: #B9DEF0;
+    font-size: 13px;
+    text-align: center;
+    font-weight: 600;
+}
+.table td {
+    color: #61666e;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+.detail button{
+    width: 70px;
+    height: 30px;
+    font-size: 13px;
+    color: #fff;
+    background: #3ea2ee;
+    border: none;
+    border-radius: 3px;
+    padding: .0rem .75rem;
+    margin-left: 15px;
+    line-height: 1.0;
+}
+.detail button:hover{
+    background: rgba(14, 75, 121, 0.64);
+}

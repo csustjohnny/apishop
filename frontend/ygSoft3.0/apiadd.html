@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>API录入2</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/apiadd.css" />
+		<script src="js/myVue.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	</head>
+
+	<body>
+		<div id="myall">
+			<header class="header">
+				<div class="header-wrap">
+					<div class="header-logo"></div>
+					<div class="header-line"></div>
+					<span class="subtitle">API录入</span>
+					<div class="header-right">
+						<a href="index.html"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</a>
+						<a href=""><span class="glyphicon glyphicon-bell"></span>&nbsp;消息</a>
+						<a href="personal.html"><span class="glyphicon glyphicon-user"></span>&nbsp;用户</a>
+					</div>
+				</div>
+			</header>
+			<hr/>
+			<div class="main">
+				<div class="left">
+					<ul class="tabItems">
+						<li>
+							<a href="javascript:void(0);">
+								<span class="glyphicon glyphicon-tags"> 增加API</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:void(0);">
+								<span class="glyphicon glyphicon-tags" @click="getMyselfAPI"> 查看API</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="right">
+					<div class="add" id="tag0">
+						<form action="">
+							<div class="top">
+								名称：<input type="text" name="name" v-model="apiName" style="width: 220px;" /> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 类别名：
+								<select name="classname" v-model="apiType" style="width: 220px;height: 30px;">
+									<!--之后考虑写个vue方法 获取一下 增加可延伸性与灵活性 -->
+									<option value="jn">生活常用</option>
+									<option value="jn">车辆服务</option>
+									<option value="jn">金融征信</option>
+									<option value="jn">位置服务</option>
+									<option value="jn">即时通讯</option>
+									<option value="jn">应用开发</option>
+									<option value="jn">旅游出行</option>
+									<option value="jn">人工智能</option>
+									<option value="jn">文娱体育</option>
+									<option value="jn">充值缴费</option>
+								</select>
+							</div>
+							<div class="middle">
+								接口地址：<input type="text" name="address" v-model="apiAdress" style="width: 400px;margin-bottom: 5px;" />
+								<br/> 请求协议：
+
+								<select name="protocol" v-model="protocol">
+									<option value="HTTP">HTTP</option>
+									<option value="HTTPS">HTTPS</option>
+								</select>
+								请求方式：
+
+								<select name="requestType" v-model="requestType">
+									<option value="post">POST</option>
+									<option value="get">GET</option>
+								</select>
+								<br/> 请求格式：
+								<select name="request-format" v-model="requestDataFormat" style="margin-top: 5px;">
+									<option value="jn">JSON</option>
+								</select>
+								&nbsp;&nbsp;&nbsp;&nbsp; 返回格式：
+								<select name="return-format" v-model="returnDataFormat">
+									<option value="jn">JSON</option>
+								</select>
+								<br/> 概要说明：
+								<input type="text" v-model="outline" style="width: 400px; margin-bottom: 10px;" />&nbsp;&nbsp;
+							</div>
+							<div class="bottom">
+								<h4>请求参数：</h4>
+								<ul>
+									<li>
+										<input type="checkbox" name="select" value="select" />&nbsp;&nbsp; 参数名称：
+										<input type="text" v-model="a.pn[0]" style="width: 200px;" />&nbsp;&nbsp; 参数说明：
+										<input type="text" v-model="a.pi[0]" style="width: 500px;" />
+									</li>
+									<li>
+										<input type="checkbox" name="select" value="select" />&nbsp;&nbsp; 参数名称：
+										<input type="text" v-model="a.pn[1]" style="width: 200px;" />&nbsp;&nbsp; 参数说明：
+										<input type="text" v-model="a.pi[1]" style="width: 500px;" />
+									</li>
+									<li>
+										<input type="checkbox" name="select" value="select" />&nbsp;&nbsp; 参数名称：
+										<input type="text" v-model="a.pn[2]" style="width: 200px;" />&nbsp;&nbsp; 参数说明：
+										<input type="text" v-model="a.pi[2]" style="width: 500px;" />
+									</li>
+									<li>
+										<input type="checkbox" name="select" value="select" />&nbsp;&nbsp; 参数名称：
+										<input type="text" v-model="a.pn[3]" style="width: 200px;" />&nbsp;&nbsp; 参数说明：
+										<input type="text" v-model="a.pi[3]" style="width: 500px;" />
+									</li>
+								</ul>
+							</div>
+							<div class="foot">
+								<!-- <button type="button">保存</button>-->
+								<button type="button" @click="add">发布</button>
+							</div>
+						</form>
+					</div>
+
+					<div class="query" id="tag1">
+						<div class="searchNav">
+							<ul class="navItem">
+								<li>
+									<p><span class="glyphicon glyphicon-list-alt"></span>已为您查询到如下结果：</p>
+								</li>
+								<li style="float: right;">
+									<button class="btn btn-xs glyphicon glyphicon-refresh"></button>
+								</li>
+							</ul>
+						</div>
+						<div class="checkInfo">
+							<table class="table table-hover" id="checkList">
+								<tr>
+									<th>
+										<input type="checkbox" name="" id="checkAll" value="" />
+									</th>
+									<th>api名称</th>
+									<th>类别名</th>
+									<th>录入时间</th>
+									<th>状态</th>
+									<th>操作</th>
+								</tr>
+								<tr v-cloak v-for="(item, index) of apiList">
+									<td>
+										<input type="checkbox" class="check" />
+									</td>
+									<td>{{item.apiName}}</td>
+									<td>{{item.apiType}}</td>
+									<td>{{item.time}}</td>
+									<td>
+										<span class="label label-info">{{item.status}}</span>
+									</td>
+									<td>
+										<div class="btn-group btn-group-xs">
+											<button type="button" class="btn btn-default checkBtn"><span class="glyphicon glyphicon-pencil"></span>修改</button>
+											<button type="button" class="btn btn-default detailBtn"><span class="glyphicon glyphicon-list"></span>查看详情</button>
+										</div>
+									</td>
+								</tr>
+								<tbody class="detailBox" style="display: none;" v-cloak v-for="(item, index) of apiList">
+									<tr class="detail">
+										<th colspan="1">接口地址</th>
+										<td colspan="3">
+											<a href="#">{{item.apiAdress}}</a>
+										</td>
+										<th colspan="1">请求协议</th>
+										<td colspan="2">{{item.protocol}}</td>
+									</tr>
+									<tr class="detail">
+										<th colspan="1">请求方式</th>
+										<td colspan="3">{{item.requestType}}</td>
+										<th colspan="1">请求格式</th>
+										<td colspan="2">{{item.requestDataFormat}}</td>
+									</tr>
+									<tr class="detail">
+										<th colspan="1">返回格式</th>
+										<td colspan="3">{{item.returnDataFormat}}</td>
+										<th colspan="1">概要说明：</th>
+										<td colspan="2">{{item.outline}}</td>
+									</tr>
+									<tr class="detail">
+										<th colspan="4">请求参数：</th>
+									</tr>
+									<tr class="detail">
+										<th colspan="1">
+											参数名称：
+										</th>
+										<td colspan="2">
+											text
+										</td>
+										<th colspan="1">
+											参数说明：
+										</th>
+										<td colspan="3">
+											二维码内容
+										</td>
+									</tr>
+
+								</tbody>
+
+							</table>
+
+							<hr />
+							<div class="fabu">
+								<button type="button" @click="add">发布</button>
+							</div>
+
+						</div>
+					</div>
+					<div class="update">
+						<form action="">
+							<div class="top">
+								名称：<input type="text" name="name" v-model="apiName" style="width: 240px;" /> &nbsp;&nbsp;&nbsp;&nbsp; 类别名：
+								<input type="text" name="classname" v-model="apiType" style="width: 220px;" />
+							</div>
+							<div class="middle">
+								接口地址：<input type="text" name="address" v-model="apiAdress" style="width: 400px;margin-bottom: 10px;" />
+								<br/> 请求协议：
+
+								<select name="protocol" v-model="protocol">
+									<option value="HTTP">HTTP</option>
+									<option value="HTTPS">HTTPS</option>
+								</select>
+								请求方式：
+
+								<select name="requestType" v-model="requestType">
+									<option value="post">POST</option>
+									<option value="get">GET</option>
+								</select>
+								<br/> 请求格式：
+								<select name="request-format" v-model="requestDataFormat" style="margin-top: 5px;">
+									<option value="jn">JSON</option>
+								</select>
+								&nbsp;&nbsp;&nbsp;&nbsp; 返回格式：
+								<select name="return-format" v-model="returnDataFormat">
+									<option value="jn">JSON</option>
+								</select>
+								<br/> 概要说明：
+								<input type="text" v-model="outline" style="width: 400px; margin-bottom: 10px;" />&nbsp;&nbsp;
+							</div>
+							<div class="bottom">
+								<h4>请求参数：</h4>
+								<ul>
+									<li>
+										<input type="checkbox" name="select" value="select" />&nbsp;&nbsp; 参数名称：
+										<input type="text" v-model="a.pn[0]" style="width: 200px;" />&nbsp;&nbsp; 参数说明：
+										<input type="text" v-model="a.pi[0]" style="width: 500px;" />
+									</li>
+									<li>
+										<input type="checkbox" name="select" value="select" />&nbsp;&nbsp; 参数名称：
+										<input type="text" v-model="a.pn[1]" style="width: 200px;" />&nbsp;&nbsp; 参数说明：
+										<input type="text" v-model="a.pi[1]" style="width: 500px;" />
+									</li>
+									<li>
+										<input type="checkbox" name="select" value="select" />&nbsp;&nbsp; 参数名称：
+										<input type="text" v-model="a.pn[2]" style="width: 200px;" />&nbsp;&nbsp; 参数说明：
+										<input type="text" v-model="a.pi[2]" style="width: 500px;" />
+									</li>
+									<li>
+										<input type="checkbox" name="select" value="select" />&nbsp;&nbsp; 参数名称：
+										<input type="text" v-model="a.pn[3]" style="width: 200px;" />&nbsp;&nbsp; 参数说明：
+										<input type="text" v-model="a.pi[3]" style="width: 500px;" />
+									</li>
+								</ul>
+							</div>
+							<div class="foot">
+
+								<button type="button" @click="updateAPI">确认修改</button>
+								<a href="javascript:void(0);"><span style="font-size: 18px;">返回</span><span class="glyphicon glyphicon-menu-right"></span></a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="application/javascript" src="js/jquery.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/apiadd.js"></script>
+		<script>
+			//7.转化为标准日期
+			Date.prototype.format = function(format) {
+				var o = {
+					"M+": this.getMonth() + 1, //month
+					"d+": this.getDate(), //day
+					"h+": this.getHours(), //hour
+					"m+": this.getMinutes(), //minute
+					"s+": this.getSeconds(), //second
+					"q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+					"S": this.getMilliseconds() //millisecond
+				}
+				if(/(y+)/.test(format)) format = format.replace(RegExp.$1,
+					(this.getFullYear() + "").substr(4 - RegExp.$1.length));
+				for(var k in o)
+					if(new RegExp("(" + k + ")").test(format))
+						format = format.replace(RegExp.$1,
+							RegExp.$1.length == 1 ? o[k] :
+							("00" + o[k]).substr(("" + o[k]).length));
+				return format;
+			}
+
+			Vue.http.options.emulateHTTP = true;
+			Vue.http.options.headers = {
+				'authToken': localStorage.getItem('token')
+			}
+			var vm = new Vue({
+				el: '#myall',
+				data: {
+					apiId: '',
+					apiName: '',
+					apiType: '',
+					apiAdress: "",
+					protocol: "",
+					requestType: "",
+					requestDataFormat: "",
+					returnDataFormat: "",
+					outline: "", //概要说明
+					time: "", //录入时间
+					status: "审核通过", //审核状态
+					publisher: "admin",
+					reviewer: "",
+
+					apiparams: [], //参数列表
+					apiList: [], //该用户的api列表
+					a: {
+						pn: [],
+						pi: []
+					}
+
+				},
+				methods: {
+					//1.获取自己录入的API
+					getMyselfAPI: function() {
+						this.$http.post('http://localhost:8080/apishop/api/getApi', {
+								publisher: this.publisher
+							},
+
+							{
+								emulateJSON: true
+							}
+						).then(function(data) {
+								console.log(data.body);
+
+								this.getMyApiList(data.body);
+							},
+							function(res) {
+								alert("获取自己录入API失败！请稍后重试！");
+							}
+						);
+					},
+
+					//2.普通用户增加API方法
+					add: function() {
+						this.jsonToString();
+						this.$http.post('http://localhost:8080/apishop/api/addApi', {
+								apiName: this.apiName,
+								apiType: this.apiType,
+								apiAddress: this.apiAdress,
+								protocol: this.protocol,
+								requestType: this.requestType,
+								requestDataFormat: this.requestDataFormat,
+								returnDataFormat: this.returnDataFormat,
+								outlin: this.outline,
+								apiparams: this.apiparams
+							},
+
+							{
+								emulateJSON: true
+							}
+						).then(
+							function(data) {
+								console.log(data);
+								alert("新增成功！")
+							},
+							function() {
+								alert("新增API信息失败！请稍后重试！");
+							}
+						);
+					},
+
+					//3.普通用户修改API方法
+					updateAPI: function() {
+						this.jsonToString();
+						this.$http.post('http://localhost:8080/apishop/api/updateApi', {
+								apiName: this.apiName,
+								apiType: this.apiType,
+								apiAddress: this.apiAdress,
+								protocol: this.protocol,
+								requestType: this.requestType,
+								requestDataFormat: this.requestDataFormat,
+								returnDataFormat: this.returnDataFormat,
+								outlin: this.outline,
+								apiparams: this.apiparams
+							},
+
+							{
+								emulateJSON: true
+							}
+						).then(function(data) {
+								console.log(data);
+								alert(data);
+							},
+							function(res) {
+								alert("修改该API失败！请稍后重试！");
+							}
+						);
+					},
+					//5.获取apilist
+					getMyApiList: function(data) {
+						if(data.length == 0) {
+							alert("暂无数据");
+							return;
+						}
+						//操作返回的api数据列表
+						$.each(data, function(index) {
+							data[index].time = new Date(data[index].time).format('yyyy-MM-dd');
+						});
+						this.apiList = data;
+					},
+
+					//6.将json数组转化为字符串
+					jsonToString: function() {
+						var row = {};
+						for(var i = 0; i < 4; i++) {
+							if(this.a.pn[i] != null && this.a.pi[i] != null) {
+								row.paramName = this.a.pn[i];
+								row.paramType = this.a.pi[i];
+								this.apiparams.push(row);
+							}
+						}
+						this.apiparams = JSON.stringify(this.apiparams);
+					},
+				}
+
+			});
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<title>用户管理</title>
+
+		<!-- Bootstrap -->
+		<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="css/tb.css" />
+		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+		<!--[if lt IE 9]>
+      <script src="lib/html5shiv/html5shiv.min.js"></script>
+      <script src="lib/respond/respond.min.js"></script>
+    <![endif]-->
+		<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+		<script src="lib/jquery/jquery.min.js"></script>
+		<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+		<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+		<script src="js/common_js/del.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common_js/closeModal.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common_js/sideBarAnimation.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/usrsManage.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/myVue.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		<style type="text/css">
+			.sideMenuItem:nth-child(2) {
+				background-color: #35404d;
+			}
+			
+			.sideMenuItem:nth-child(2)>ul {
+				display: block;
+			}
+			/*--------主内容*/
+			
+			#managerCode {
+				width: 100%;
+			}
+			
+			.usrInfo {
+				position: relative;
+			}
+			
+			.fenye {
+				position: absolute;
+				right: 3%;
+				bottom: -27px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="allContent">
+			<!--
+        	橫向導航欄
+        -->
+			<nav id="x-nav">
+				<img src="img/image002.png" width="100" />
+				<span style="border-left: 1px solid #bbb;">&nbsp;后台管理</span>
+				<ul class="setting">
+					<li>
+						<span class="glyphicon glyphicon-bell">消息<span>
+					
+				</li>
+				<li>
+					<a href="index.html"><span class="glyphicon glyphicon-log-out" >退出</span></a>
+
+					</li>
+
+				</ul>
+
+			</nav>
+			<!--
+        	侧方菜单栏
+        -->
+			<div class="sidebar">
+				<div class="adminInfo">
+					<p><span class="glyphicon glyphicon-user"></span>欢迎系统管理员：XXX</p>
+				</div>
+				<hr />
+				<div class="sideMenu">
+					<div class="sideMenuItem">
+						<span class="menuTil " id="resourceMgTil"><span class="glyphicon glyphicon-tags"></span>资源管理</span>
+
+					</div>
+					<div class="sideMenuItem">
+						<span class="menuTil" id="userMgTil">
+						<span class="glyphicon glyphicon-tags"></span>用户管理
+						</span>
+					</div>
+					<div class="sideMenuItem">
+						<span class="menuTil" id="roleMgTil"><span class="glyphicon glyphicon-tags"></span>角色管理</span>
+					</div>
+					<div class="sideMenuItem">
+						<span class="menuTil" id="authorityMgTil"><span class="glyphicon glyphicon-tags"></span>权限管理</span>
+					</div>
+					<div class="sideMenuItem">
+						<span class="menuTil" id="logMgTil"><span class="glyphicon glyphicon-tags"></span>日志管理</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="adminContent">
+				<!--
+            	路徑导航
+            -->
+				<div class="pathNav">
+					<ul class="path">
+						<li>
+							<button class="btn btn-default btn-xs active">首页</button>
+						</li>
+						<li>
+							<button class="btn btn-default btn-xs active">用户管理</button>
+						</li>
+					</ul>
+				</div>
+				<!--
+				主内容
+			-->
+				<div class="admin">
+
+					<div class="usrBox">
+						<div class="title">
+							<h2><img src="img/user_manage_48812.png" width="50"/>用户列表</h2>
+
+						</div>
+						<div class="line"> </div>
+
+						<!--搜索输入框及查询、重置按钮-->
+						<div class="container search_box">
+
+							<div>
+								<span>查询：</span>
+								<input type="text" placeholder="请输入要查询的关键字" @input="search" list="cars" class="search-input">
+								<datalist id="cars">
+                					<option v-for="item in searchList" :value="item"></option>
+           						</datalist>
+								<input type="button" class="add tn btn-primary search_btn" @click="showAddOverlay" value="新增">
+							</div>
+							
+						</div>
+
+						<div class="usrInfo">
+							<table border="" cellspacing="" cellpadding="" class="table table-hover" id="usrList">
+								<thead>
+									<tr>
+									
+										<th>用户名称</th>
+								
+										<th>用户角色</th>
+									
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-cloak v-for="(item, index) of userList">
+
+										<td>{{item.userName}}</td>
+
+										<td>{{item.roles}}</td>
+										<td>
+											<button @click="showUpdateOverlay(index, item.id)" type="button" class="btn btn-default updateBtn"><span class="glyphicon glyphicon-pencil"></span></button>
+											<button @click="deleteUser(item.id)" type="button" class="btn btn-default deleteBtn"><span class="glyphicon glyphicon-trash"></span></button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							
+						</div>
+					</div>
+					<up-model :rolelist='roleItems' :user='selectedUser' :isactive='isUpdateActive' v-cloak @update="updateUser" @change="changeUpdateOverlay"></up-model>
+					<ad-model :user='addUser' :isactive='isAddActive' v-cloak @change="changeAddOverlay" @modify="add"></ad-model>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				//路径导航跳转
+				$(".path>li").eq(0).click(function() {
+					location.href = "backstageIndex.html";
+				});
+
+			});
+		</script>
+		<script src="js/common_js/pageTransition.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			Vue.http.options.emulateHTTP = true;
+			Vue.http.options.headers = {
+    			'authToken':localStorage.getItem('token')
+			}  
+			//修改用户模态框
+			Vue.component('ad-model', {
+				props: ['user', 'isactive'],
+				template: `<div class="overlay" v-show="isactive">
+                        <div class="con">
+                        <h2 class="title">新增</h2>
+                        <div class="content">
+                        <table class="table modal-table">
+                        <tr>
+                        <td>用户名称:</td>
+                        <td><input type="text" class="update" v-model="user.userName"></td>
+                        </tr>
+                        <tr>
+                        <td>用户密码:</td>
+                        <td><input type="text" v-model="user.password"></td>
+                        </tr>
+                        </table>
+                        <p align="center">
+                        <input type="button" @click="changeActive" value="取消">
+                        <input type="button" @click="modify" value="添加">
+                        </p>
+                        </div>
+                        </div>
+                </div>`,
+				computed: {
+					User() {
+						return this.user;
+					}
+				},
+				methods: {
+					changeActive() {
+						this.$emit('change');
+					},
+					modify() {
+
+						this.$emit('modify', this.User);
+					}
+				}
+			});
+			//修改用户模态框
+			Vue.component('up-model', {
+				props: ['rolelist', 'user', 'isactive'],
+				template: `<div class="overlay" v-show="isactive">
+                        <div class="con">
+                        <h2 class="title">修改 </h2>
+                        <div class="content">
+                        <table class="table modal-table">
+                        <tr>
+                        <td>用户名称:</td>
+                        <td><input type="text" v-model="user.userName"></td>
+                        </tr>
+                        <tr>
+                        <td>用户角色:</td>
+                        </tr>
+                        <tr v-for="(item, index) in rolelist">
+							<td><input type="checkbox" :id="item.rid" :value="item.rid" v-model="user.roles">
+							</td>
+							<td><label :for="item.rid">{{item.role}}</label></td>	
+						</tr>
+                        </table>
+                        <p align="center">
+                        <input type="button" @click="changeActive" value="取消">
+                        <input type="button" @click="add" value="修改">
+                        </p>
+                        </div>
+                        </div>
+                </div>`,
+				computed: {
+					User() {
+						return this.user;
+					}
+				},
+				methods: {
+					changeActive() {
+						this.$emit('change');
+					},
+					add() {
+						this.$emit('update', this.User);
+					}
+				}
+			});
+			Vue.http.options.emulateHTTP = true;
+			Vue.http.options.headers = {
+    			'authToken':localStorage.getItem('token')
+			}  
+			var vm = new Vue({
+				el: "#allContent",
+				data: {
+					roleItems: [],
+					userList: [], //显示在表格里面的用户列表
+					sList: [{
+							id: '1',
+							name: '张三',
+							passWord: 'andk29d@k3kdf',
+							userRole: '审核用户'
+						},
+						{
+							id: '2',
+							name: '李四',
+							passWord: 'kd/c;ad;',
+							userRole: '测试用户'
+						}
+					], //所有用户
+					searchList: '',
+					addUser: {}, //要添加的用户
+					isAddActive: false, //是否显示添加用户模态框
+					isUpdateActive: false, //是否显示更新用户信息模态框
+					selectedUser: {}
+				},
+				mounted: function() {
+					this.getAllUsers();
+				},
+				methods: {
+					//显示增加用户模态框
+					showAddOverlay(index) {
+						//							this.selectedUser = JSON.parse(JSON.stringify(this.sList[index]));
+						this.changeAddOverlay();
+					},
+
+					setUserlist(arr) {
+						this.userList = JSON.parse(JSON.stringify(arr));
+					},
+
+					getAllUsers: function() {
+						this.$http.get('http://localhost:8080/apishop/config/listUser',
+							).then(
+							function(data) {
+								console.log(data.body);
+								var list = data.body;
+								var jsonData = [];
+
+								$.each(list, function(key, value) {
+									var item = {};
+									item = getUserInformation(key);
+									item.roles = [];
+									for(var i = 0; i < value.length; i++) {
+										item.roles.push(value[i].role);
+									}
+									jsonData.push(item);
+								});
+								this.sList = jsonData;
+								this.setUserlist(jsonData);
+							},
+							function() {
+								alert("获取用户信息失败！请稍后重试！");
+							}
+						);
+					},
+
+					add: function(user) {
+						this.$http.post('http://localhost:8080/apishop/config/addUser', {
+							'userName': user.userName,
+							'password': user.password
+						}, 
+						
+						{
+							emulateJSON: true
+						}).then(
+							function(data) {
+								if(data.bodyText == 'success') {
+									alert('添加成功');
+								} else
+									alert(data.bodyText);
+								this.addUser = {};
+								this.changeAddOverlay();
+								this.getAllUsers();
+							},
+							function() {
+								alert("新增用户信息失败！请稍后重试！");
+							}
+						);
+					},
+
+					deleteUser: function(uid) {
+						if(window.confirm('你确定要删除吗？此操作无法撤销')) {
+							this.$http.post('http://localhost:8080/apishop/config/deleteUser', {
+								'id': uid
+							}, 
+						
+							{
+								emulateJSON: true
+							}).then(
+								function(data) {
+									if(data.bodyText == 'success') {
+										alert('删除成功');
+									} else {
+										alert(data.bodyText);
+									}
+									this.getAllUsers();
+								},
+								function() {
+									alert("删除用户信息失败！请稍后重试！");
+								}
+							);
+						} else {
+							return false;
+						}
+					},
+
+					showUpdateOverlay: function(index, id) {
+						this.selectedUser = JSON.parse(JSON.stringify(this.sList[index]));
+						this.selectedUser.roles = [];
+						this.getRoleList();
+						this.changeUpdateOverlay();
+					},
+					getRoleList: function() {
+						this.$http.get('http://localhost:8080/apishop/config/listRole').then(
+							function(data) {
+								data = data.body;
+								console.log(data);
+								var jsonData = [];
+								var item = {};
+								$.each(data, function(key, value) {
+									key = dataToJSON(key);
+									jsonData.push(key);
+								});
+								this.roleItems = jsonData;
+							},
+							function() {
+								alert("获取角色信息失败！请稍后重试！");
+							}
+						);
+					},
+
+					updateUser: function(user) {
+						console.log(user.roles);
+
+						this.$http.post('http://localhost:8080/apishop/config/addUserRole', {
+							'uid': user.id,
+							'rids': user.roles
+						},
+						
+						{
+							emulateJSON: true
+						}).then(
+							function(data) {
+								if(data.bodyText == 'success') {
+									alert('修改成功');
+								} else {
+									alert(data.bodyText);
+								}
+								this.getAllUsers();
+								this.changeUpdateOverlay();
+							},
+							function() {
+								alert("修改用户信息失败！请检查网络连接或是否赋予了角色");
+							}
+						);
+					},
+					//查找用户名称
+					search(e) {
+						var v = e.target.value,
+							self = this;
+						self.searchList = [];
+						if(v) {
+							var ss = [];
+							// 过滤需要的数据
+							this.sList.forEach(function(item) {
+								if(item.id.indexOf(v) > -1) {
+									if(self.searchList.indexOf(item.id) == -1) {
+										self.searchList.push(item.id);
+									}
+									ss.push(item);
+								} else if(item.userName.indexOf(v) > -1) {
+									if(self.searchList.indexOf(item.name) == -1) {
+										self.searchList.push(item.name);
+									}
+									ss.push(item);
+								}
+								
+							});
+							this.setUserlist(ss); // 将过滤后的数据给了slist
+						} else {
+							// 没有搜索内容，则展示全部数据
+							this.setUserlist(this.sList);
+						}
+					},
+
+					//切换增加模态框是否显示
+					changeAddOverlay: function() {
+						this.isAddActive = !this.isAddActive;
+					},
+					//切换修改模态框显示
+					changeUpdateOverlay: function() {
+						this.isUpdateActive = !this.isUpdateActive;
+					}
+
+				}
+			});
+
+			function getUserInformation(data) {
+				var info = {};
+				data = data.split(',');
+				var index = data[0].indexOf(':') + 1;
+				info.id = data[0].substring(index);
+				index = data[1].indexOf(':') + 1;
+				info.userName = data[1].substring(index);
+				return info;
+			}
+
+			function dataToJSON(data) {
+				var list = {};
+				data = data.toString();
+				data = data.split(',');
+				//				console.log(data);
+				var index1 = data[0].indexOf('=') + 1;
+				var index2 = data[1].indexOf('=') + 1;
+				var id = data[0].substring(index1);
+				var role = data[1].substring(index2, data[1].length - 1);
+				var list = {};
+				list.rid = id;
+				list.role = role;
+				//				console.log(list);
+				return list;
+
+			}
+		</script>
+	</body>
+
+</html>

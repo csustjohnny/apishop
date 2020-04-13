@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="gb2312">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>注册API Shop</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/register.css"/>
+    <script type="text/javascript" src="js/myVue.js"></script>
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	<script type="application/javascript" src="js/jquery.min.js"></script>
+	<script type="application/javascript" src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="middle-bg" id="register">
+    <h1>API Shop</h1>
+    <form class="form-horizontal">
+        <h2>注册</h2>
+        <div id="form_register_div">
+            <div class="col-md-10">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <input type="text" class="form-control" v-model="username" placeholder="请输入账号" @blur="checkUsername" autofocus>
+                <p id="user_prompt"><i>{{user_prompt}}</i></p>
+            </div>
+            <div class="col-md-10">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <input type="password" class="form-control"  v-model="password" name="password" @blur="checkPassword" placeholder="请输入密码">
+                <p id="pwd_prompt"><i>{{password_prompt}}</i></p>
+            </div>
+            <div class="col-md-10">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <input type="password" class="form-control" v-model="repassword" name="password" @blur="checkRepassword" placeholder="请再次输入密码">
+                <p id="repwd_prompt" style="color: red;">{{repwd_info}}</p>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="button" @click="register">Sign up</button>
+            <p>
+                已有账号？ <a :href="loginUrl">点击登录</a>
+            </p>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+	new Vue({
+		el: '#register',
+		data: {
+			username: '',
+			user_prompt: '4-16位字符(字母或数字，以字母开头)',
+			password: '',
+			repwd_info: '',
+			password_prompt: '4-10位字符(字母或数字)',
+			repassword:'',
+			loginUrl: 'logIn.html',
+			isIllegal1: false,
+			isIllegal2: false,
+			isIllegal3: false
+		},
+		watch: {
+
+		},
+		methods: {
+			register:function(){
+					this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/config/addUser',
+					{userName:this.username,password:this.password},
+					{emulateJSON:true}
+					).then(
+						function(data){
+							console.log(data);
+							alert("注册成功，将跳转到登录界面");
+							window.location.href = "login.html";
+						},
+						function(){
+							alert("注册失败！请稍后重试！");
+						}
+					);
+				},
+				
+			checkUsername: function(){
+				var reg=/^[a-zA-Z][a-zA-Z0-9]{3,15}$/;
+				if(reg.test(this.username) == true){
+					this.user_prompt = '输入正确';
+					this.pId('user_prompt').style.color = "#1baeff";
+					this.isIllegal1 = true;
+				} else {
+					this.user_prompt = "格式不正确，4-16位字符(字母或数字，以字母开头)";
+					this.pId('user_prompt').style.color = "red";
+					this.isIllegal1 = false;
+				}
+			},
+			checkPassword: function(){
+				var reg=/^[a-zA-Z0-9]{4,10}$/;
+				if(reg.test(this.password) == true){
+					this.password_prompt = '输入正确';
+					this.pId('pwd_prompt').style.color = "#1baeff";
+					this.isIllegal2 = true;
+				} else {
+					this.password_prompt = "格式不正确，4-10位字符(字母或数字)";
+					this.pId('pwd_prompt').style.color = "red";
+					this.isIllegal2 = false;
+				}
+			},
+			checkRepassword: function(){
+				if(this.repassword != this.password){
+					this.repwd_info = "两次输入的密码不一致，请重新输入";
+					this.isIllegal3 = false;
+				} else {
+					this.repwd_info = '';
+					this.isIllegal3 = true;
+				}
+			},
+			
+			pId(elementId){
+        		return document.getElementById(elementId);
+    		}
+		}
+	})
+    function $(elementId){
+        return document.getElementById(elementId).value;
+    }
+
+</script>
+</body>
+</html>

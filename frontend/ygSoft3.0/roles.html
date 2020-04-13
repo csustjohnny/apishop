@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<title>角色管理</title>
+		<!-- Bootstrap -->
+		<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="css/tb.css" />
+		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+		<!--[if lt IE 9]>
+      <script src="lib/html5shiv/html5shiv.min.js"></script>
+      <script src="lib/respond/respond.min.js"></script>
+    <![endif]-->
+
+		<script src="lib/jquery/jquery.min.js"></script>
+		<script src="lib/bootstrap/js/bootstrap.js"></script>
+		<script src="js/common_js/del.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common_js/closeModal.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common_js/sideBarAnimation.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/roleManage.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/myVue.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		<script src="js/common_js/pageTransition.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.sideMenuItem:nth-child(2) {
+				background-color: #35404d;
+			}
+			
+			.sideMenuItem:nth-child(2)>ul {
+				display: block;
+			}
+			
+			img {
+				margin-right: 5px;
+			}
+			
+			#managerCode {
+				width: 100%;
+			}
+			
+			.overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 6;
+				background: rgba(0, 0, 0, 0.7);
+			}
+			
+			.overlay td:first-child {
+				width: 66px;
+			}
+			
+			.overlay .con {
+				position: absolute;
+				width: 420px;
+				min-height: 300px;
+				max-height: 400;
+				background: #fff;
+				left: 50%;
+				top: 50%;
+				-webkit-transform: translate3d(-50%, -50%, 0);
+				transform: translate3d(-50%, -50%, 0);
+				/*margin-top: -150px;*/
+				padding: 20px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+
+		<!--
+	   	橫向導航欄
+        -->
+		<nav id="x-nav">
+			<img src="img/image002.png" width="100" />
+			<span style="border-left: 1px solid #bbb;">&nbsp;后台管理</span>
+			<ul class="setting">
+				<li>
+					<span class="glyphicon glyphicon-bell">消息<span>
+					
+				</li>
+				<li>
+					<a href="index.html"><span class="glyphicon glyphicon-log-out" >退出</span></a>
+				</li>
+
+			</ul>
+
+		</nav>
+		<!--
+        	侧方菜单栏
+        -->
+		<div class="sidebar">
+			<div class="adminInfo">
+				<p><span class="glyphicon glyphicon-user"></span>欢迎系统管理员：XXX</p>
+			</div>
+			<hr />
+			<div class="sideMenu">
+				<div class="sideMenuItem">
+					<span class="menuTil " id="resourceMgTil"><span class="glyphicon glyphicon-tags"></span>资源管理</span>
+
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="userMgTil">
+						<span class="glyphicon glyphicon-tags"></span>用户管理
+					</span>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="roleMgTil"><span class="glyphicon glyphicon-tags"></span>角色管理</span>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="authorityMgTil"><span class="glyphicon glyphicon-tags"></span>权限管理</span>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="logMgTil"><span class="glyphicon glyphicon-tags"></span>日志管理</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="adminContent">
+			<!--
+            	路徑导航
+            -->
+			<div class="pathNav">
+				<ul class="path">
+					<li>
+						<button class="btn btn-default btn-xs active">首页</button>
+					</li>
+					<li>
+						<button class="btn btn-default btn-xs active">角色管理</button>
+					</li>
+				</ul>
+			</div>
+			<!--
+				主内容
+			-->
+			<div class="admin" id="admin">
+				<div class="roleBox">
+					<div class="title">
+						<h2><img src="img/role.svg" width="50"/>角色列表</h2>
+
+					</div>
+					<div class="line"> </div>
+
+					<!--搜索输入框及查询、重置按钮-->
+					<div class="container search_box">
+						<div>
+							<span>查询：</span>
+							<input type="text" placeholder="请输入要查询的关键字" @input="search" list="cars" class="search-input">
+							<datalist id="cars">
+                					<option v-for="item in searchList" :value="item"></option>
+           						</datalist>
+							<input type="button" class="add" @click="showAddOverlay" value="新增">
+						</div>
+					</div>
+
+					<div class="roleInfo">
+						<table border="" cellspacing="" cellpadding="" class="table table-hover" id="roleList">
+							<tr>
+								<!--<th>
+									<input type="checkbox" name="" id="checkAll" value="" />
+								</th>-->
+								<th>ID</th>
+								<th>角色</th>
+								<!--<th>角色名称</th>-->
+								<th>拥有权限</th>
+								<th>操作</th>
+							</tr>
+							
+							<tr v-cloak v-for="(item, index) of roleList">
+								<td>{{item.id}}</td>
+								<td>{{item.role}}</td>
+								<td>{{item.actions}}</td>
+								<td>
+									<button @click="showUpdateOverlay(index)" type="button" class="btn btn-default updateBtn"><span class="glyphicon glyphicon-pencil"></span></button>
+									<button @click="deleteRole(item.id)" type="button" class="btn btn-default deleteBtn"><span class="glyphicon glyphicon-trash"></span></button>
+								</td>
+							</tr>
+
+						</table>
+						<!--<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-default" id="delMore">批量删除</button>
+							<button @click="showAddOverlay()" type="button" class="btn btn-default">新增</button>
+							<button type="button" class="btn btn-default" id="save">保存</button>
+						</div>-->
+					</div>
+
+				</div>
+				<update-model :permission='authorityItems' :list='selectedRole' :isactive="isUpdateActive" v-cloak @change="changeUpdateOverlay" @modify="modify"></update-model>
+				<add-model :list='addRoleName' :isactive='isAddActive' v-cloak @change="changeAddOverlay" @modify="addRole"></add-model>
+			</div>
+		</div>
+		<script type="text/javascript ">
+			$(function() {
+				//路径导航跳转
+				$(".path>li").eq(0).click(function() {
+					location.href = "backstageIndex.html";
+				}); //---------------侧方菜单动画---------------------- 
+				sideBarAnimation("#role");
+			});
+		</script>
+
+		<script>
+			Vue.http.options.emulateHTTP = true;
+			Vue.http.options.headers = {
+    			'authToken':localStorage.getItem('token')
+			}  
+			Vue.component('add-model', {
+				props: ['name', 'isactive'],
+				template: `<div class="overlay" v-show="isactive">
+                        <div class="con">
+                        <h2 class="title">新增 </h2>
+                        <div class="content">
+                        <table class="table modal-table">
+                        <tr>
+                        <td>角色名称</td>
+                        <td><input type="text" v-model="name"></td>
+                        </tr>
+                        </table>
+                        <p align="center">
+                        <input type="button" @click="changeActive" value="取消">
+                        <input type="button" @click="modify" value="添加">
+                        </p>
+                        </div>
+                        </div>
+                </div>`,
+				computed: {
+					addName() {
+						return this.name;
+					}
+				},
+				methods: {
+					changeActive() {
+						this.$emit('change');
+					},
+					modify() {
+						this.$emit('modify', this.addName);
+					}
+				}
+			});
+			//编辑信息模态框
+			Vue.component('update-model', {
+				props: ['permission', 'list', 'isactive'],
+				template: `<div class="overlay" v-show="isactive">
+                        <div class="con">
+                        <h2 class="title">修改</h2>
+                        <div class="content">
+                        <table class="table modal-table">
+                        <tr>
+                        <td>ID</td>
+                        <td><input type="text" v-model="list.id" readonly></td>
+                        </tr>
+                        <tr>
+                        <td>角色</td>
+                        <td><input type="text" v-model="list.role"></td>
+                        </tr>
+                        </table>
+                        <div style="height: 200px; overflaw: auto;">
+                        <table>
+                        <tr>
+                        <td>赋予权限:</td>
+                        </tr>
+                        <tr v-cloak v-for="(item, index) in permission">
+							<td><input type="checkbox" :id="item.id" :value="item.id" v-model="list.pids"></td>
+							<td><label :for="item.id">{{item.action}}</label></td>
+						</tr>
+						</div>
+                        </table>
+                        <p>
+                        <input type="button" @click="changeActive" value="取消">
+                        <input type="button" @click="modify" value="保存">
+                        </p>
+                        </div>
+                        </div>
+                    </div>`,
+				computed: {
+					modifylist() {
+						return this.list;
+					}
+				},
+				methods: {
+					changeActive() {
+						this.$emit('change');
+					},
+					modify() {
+						this.$emit('modify', this.modifylist);
+					}
+				}
+			});
+			var vm = new Vue({
+				el: "#admin",
+				data: {
+
+					addRoleName: '', //添加角色的名称
+
+					updateRoleName: '', //更新的角色名称
+					updatePermission: '', //更新的角色权限
+
+					authorityItems: [{
+						"id": 1,
+						"url": "/config/listUser",
+						"action": "查看所有用户"
+					}, {
+						"id": 2,
+						"url": "/config/addUser",
+						"action": "添加用户"
+					}, {
+						"id": 3,
+						"url": "/config/deleteUser",
+						"action": "删除用户"
+					}, {
+						"id": 4,
+						"url": "/config/UpdateUser",
+						"action": "修改用户"
+					}],
+					roleList: [], //角色列表
+					searchList: [], //查询列表
+					slist: [{
+							id: '1',
+							name: '审核用户',
+							permissionId: '审核'
+						},
+						{
+							id: '2',
+							name: '测试用户',
+							permissionId: '测试'
+						},
+						{
+							id: '3',
+							name: '普通用户',
+							permissionId: '发布'
+						}
+					], //测试数据
+					selected: -1,
+					selectedRole: {},
+					isUpdateActive: false,
+					isAddActive: false,
+					role: {}
+				},
+				mounted: function() {
+					this.listRole();
+
+				},
+				methods: {
+					//显示添加角色模态框
+					showAddOverlay() {
+						this.changeAddOverlay();
+					},
+					//显示编辑角色模态框
+					showUpdateOverlay(index) {
+						this.selected = index;
+						this.selectedRole = JSON.parse(JSON.stringify(this.roleList[index]));
+						this.selectedRole.pids = [];
+						this.getPermissions();
+						this.changeUpdateOverlay();
+					},
+					getPermissions: function() {
+						this.$http.get('http://localhost:8080/apishop/config/listPermission').then(
+							function(data) {
+								data = data.body;
+								this.authorityItems = JSON.parse(JSON.stringify(data));
+							},
+							function() {
+								alert("获取权限信息失败！请稍后重试！");
+							}
+						);
+
+					},
+					//获取所有角色信息
+					listRole: function() {
+						this.$http.get('http://localhost:8080/apishop/config/listRole').then(
+							function(data) {
+								data = data.body;
+								//console.log(data);
+								var jsonData = [];
+
+								$.each(data, function(key, value) {
+									key = dataToJSON(key);
+									var item = [];
+									$.each(value, function(key, val) {
+										item.push(val.action);
+									});
+									key.actions = item;
+									jsonData.push(key);
+								});
+								this.slist = jsonData;
+								this.setRolelist(jsonData);
+							},
+							function() {
+								alert("获取角色信息失败！请稍后重试！");
+							}
+						);
+					},
+					//更新角色信息
+					modify: function(arr) {
+						this.$http.post('http://localhost:8080/apishop/config/updateRole', {
+							id: arr.id,
+							role: arr.role,
+							pids: arr.pids
+						}, {
+							emulateJSON: true
+						}).then(
+							function(data) {
+								if(data.bodyText == 'success')
+									alert("修改成功");
+								else
+									alert(data.bodyText);
+								this.listRole();
+								this.changeUpdateOverlay();
+							},
+							function() {
+								alert("修改角色信息失败！请稍后重试！");
+							}
+						);
+					},
+					//设置显示的角色信息
+					setRolelist(arr) {
+						this.roleList = JSON.parse(JSON.stringify(arr));
+					},
+					//通过角色名字添加角色
+					addRole: function(name) {
+						//判断id，角色是否为空
+						if(name == "") {
+							alert("请输入角色名称");
+							return;
+						} else {
+							this.$http.post('http://localhost:8080/apishop/config/addRole', {
+								role: name
+							}, {
+								emulateJSON: true,
+							}).then(
+								function(data) {
+									if(data.bodyText == 'success') {
+										alert('新增成功');
+										this.listRole();
+										this.changeAddOverlay();
+									} else
+										alert(data.bodyText);
+								},
+								function() {
+									alert("新增角色信息失败！请稍后重试！");
+								}
+							);
+						}
+
+					},
+					//通过角色ID删除角色
+					deleteRole: function(id) {
+						if(window.confirm('你确定要删除吗？此操作无法撤销')) {
+							this.$http.post('http://localhost:8080/apishop/config/deleteRole', {
+								rid: id
+							}, {
+								emulateJSON: true
+							}).then(
+								function(data) {
+									//console.log(data);
+									if(data.bodyText == 'success') {
+										alert('删除成功');
+									} else {
+										alert(data.bodyText);
+									}
+									console.log(this.authorityItems);
+									this.listRole();
+								},
+								function() {
+									alert("删除角色信息失败！请稍后重试！");
+								}
+							);
+						} else {
+							//alert("取消");
+							return false;
+						}
+					},
+					//查找角色名称
+					search(e) {
+						var v = e.target.value,
+							self = this;
+						self.searchList = [];
+						if(v) {
+							var ss = [];
+							// 过滤需要的数据
+							//console.log(this.slist);
+							this.slist.forEach(function(item) {
+								if(item.id.indexOf(v) > -1) {
+									if(self.searchList.indexOf(item.id) == -1) {
+										self.searchList.push(item.id);
+									}
+									ss.push(item);
+								} else if(item.role.indexOf(v) > -1) {
+									if(self.searchList.indexOf(item.role) == -1) {
+										self.searchList.push(item.role);
+									}
+									ss.push(item);
+								} else if(item.action.indexOf(v) > -1) {
+									if(self.searchList.indexOf(item.action) == -1) {
+										self.searchList.push(item.action);
+									}
+									ss.push(item);
+								}
+							});
+							this.setRolelist(ss); // 将过滤后的数据给了slist
+
+						} else {
+							// 没有搜索内容，则展示全部数据
+							this.setRolelist(this.slist);
+						}
+					},
+					//改变修改角色模态框显示方式
+					changeUpdateOverlay: function() {
+						this.isUpdateActive = !this.isUpdateActive;
+					},
+					//改变增加角色模态框显示方式
+					changeAddOverlay: function() {
+						this.isAddActive = !this.isAddActive;
+					}
+
+				}
+			});
+
+			function dataToJSON(data) {
+				var list = {};
+				data = data.toString();
+				data = data.split(',');
+				//				console.log(data);
+				var index1 = data[0].indexOf('=') + 1;
+				var index2 = data[1].indexOf('=') + 1;
+				var id = data[0].substring(index1);
+				var role = data[1].substring(index2, data[1].length - 1);
+				var list = {};
+				list.id = id;
+				list.role = role;
+				//				console.log(list);
+				return list;
+
+			}
+		</script>
+	</body>
+
+</html>

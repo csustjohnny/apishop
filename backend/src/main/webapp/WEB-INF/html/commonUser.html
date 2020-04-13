@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>api商店核心代码测试</title>
+		<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		<script type="text/javascript" src="js/myFetch.js" ></script>
+	</head>
+
+	<body>
+		
+		<div id="postMethod">
+			<input type="button" @click="getAllAPI()" value="获取公共的API">
+			<!--<input type="button" @click="getApi()" value="获取未审核的API">-->
+			<input type="button" @click="getVerifyingAPI()" value="获取未审核的API">
+			<input type="button" @click="getMyselfAPI()" value="获取自己的API">
+			<a href="#" target="_blank"></a>
+		</div>
+		<script type="text/javascript">
+
+			var getAPI = new Vue({
+				el: '#postMethod',
+				data: {					
+					apiId:'',
+					apiName:'',
+					apiType:'',
+					apiAdress:"",
+					protocol:"",
+					requestType:"",
+					requestDataFormat:"",
+					returnDataFormat:"",
+					outline:"",                  //概要说明
+					time:"",                    //录入时间
+					status:"未审核",                   //审核状态
+					publisher:"admin",
+					reviewer:"",
+	
+				},
+				methods: {
+					//请求api的函数
+					getApiByStr:function(str){
+						this.$http.get('http://csust.ngrok.xiaomiqiu.cn/apishop/api/getApi',
+						{status:str},
+						{emulateJSON: true}
+						).then(
+						
+							function(data){
+								console.log(data.body);
+								if(data.body.length == 0){
+								alert("暂无数据");
+							}
+							//操作返回的api数据列表
+							return data.body;
+						},
+						function(){
+							alert("获取公共API失败！请稍后重试！");
+						}
+						);
+					},
+					
+					//修改api的状态
+					updateApiByStr: function(str){
+						this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/api/updateApi', 
+						{status:str}, 
+						{emulateJSON: true}
+						).then(function(data) {
+							console.log(data);
+						}, 
+						function(res) {
+								alert("修改该API的状态失败！请稍后重试！");
+						}
+						);
+					},
+					//1.所有公共的API
+                      getAllAPI:function(){
+					 this.getApiByStr(this.status);
+				 	},
+				
+					//2.获取带审批API
+					getVerifyingAPI: function(){
+						this.getApiByStr(this.status);
+						
+					},
+					
+					//3.获取带测试API
+					getTestingAPI: function(){
+						this.getApiByStr(this.status);
+					},
+					
+					//获取自己录入的API
+					getMyselfAPI: function(){
+						this.$http.get('http://csust.ngrok.xiaomiqiu.cn/apishop/api/getApi',
+						{publisher:this.publisher},
+						{emulateJSON: true}
+						).then(function(data) {
+							console.log(data.body);
+						}, 
+						function(res) {
+							alert("获取自己录入API失败！请稍后重试！");
+						}
+						);
+					},
+					
+					//审核用户审批API
+					verifyAPI: function(){
+						this.updateApiByStr(this.status);
+					},
+
+					//测试用户测试API
+					testAPI: function(){
+						this.updateApiByStr(this.status);
+					},
+					
+					//普通用户增加API方法
+					add: function(){
+					this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/api/addAPI',
+					{},
+					{emulateJSON:true}
+					).then(
+						function(data){
+							console.log(data);
+						},
+						function(){
+							alert("新增API信息失败！请稍后重试！");
+						}
+					);
+				},
+				
+					//普通用户修改API方法
+					updateAPI: function(){
+						this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/api/updateApi', 
+						{}, 
+						{emulateJSON: true}
+						).then(function(data) {
+							console.log(data);
+						}, 
+						function(res) {
+								alert("修改该API失败！请稍后重试！");
+						}
+						);
+					}
+				}
+			})
+		</script>
+	</body>
+
+</html>

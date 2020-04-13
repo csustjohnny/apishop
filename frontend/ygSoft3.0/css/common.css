@@ -1,0 +1,218 @@
+			body {
+				font-family: "微软雅黑";
+			}
+			/*---------首導航條---------*/
+			[v-cloak] {
+				display: none
+			}
+			img {
+				margin-left: 10px;
+				
+			}
+			
+			#x-nav {
+				position: relative;
+				line-height: 50px;
+				height: 50px;
+				font-weight: 700;
+				font-size: 16px;
+			}
+			
+			ul {
+				list-style: none;
+				cursor: pointer;
+			}
+			
+			.setting {
+				height: 30px;
+				padding-top: 0;
+				border-left: 1px solid #aaa;
+				font-size: 100%;
+				top: 10px;
+				right: 0;
+				position: absolute;
+			}
+			
+			.setting>li {
+				/*background-color: #eee;*/
+				display: block;
+				padding-top: 0px;
+				margin-left: -40px;
+				width: 100px;
+				text-align: center;
+				line-height: 30px;
+				float: left;
+			}
+			
+			.setting>li>span {
+				font-size: 15px;
+			}
+			
+			.setting>li:hover {
+				color: orangered;
+			}
+			/*------------侧方菜单-----------------*/
+			
+			.sidebar {
+				background-color: #2a3542;
+				color: #bbb;
+				position: fixed;
+				display: block;
+				/*border: 1px solid #000;*/
+				width: 220px;
+				min-height: 100%;
+				left: 0;
+				top: 50px;
+			}
+			
+			.adminInfo {
+				margin-left: 10px;
+				margin-top: 15px;
+				font-size: 13px;
+			}
+			
+			.glyphicon-user {
+				font-size: 13px;
+				margin-right: 5px;
+			}
+			
+			.sideMenuItem {
+				width: 190px;
+				cursor: pointer;
+				margin-left: 10px;
+				margin-bottom: 30px;
+				border-radius: 2px;
+				/*box-shadow: -1px 1px 2px #000000;*/
+			}
+			
+			.sideMenuItem>ul {
+				display: none;
+				border-top: 2px solid #2a3542;
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+			
+		
+			
+			.sideMenuItem>ul>li {
+				margin-left: -12px;
+				margin-bottom: 5px;
+			}
+			
+			.menuTil {
+				line-height: 30px;
+				display: block;
+				margin-left: 20px;
+				height: 30px;
+			}
+			
+			.glyphicon-tags {
+				margin-left: -10px;
+				margin-right: 5px;
+				font-size: 12px;
+			}
+			/*----------路径导航条------------*/
+			
+			.pathNav {
+				position: fixed;
+				right: 0;
+				bottom: 0;
+				top: 50px;
+				left: 220px;
+				overflow: auto;
+				width: 100%;
+				height: 35px;
+				background-color: #2a3542;
+			}
+			.path{
+				position: absolute;
+				top: 7px;
+				left: -10px;
+			}
+			.path>li{
+				
+				display: inline-block;
+				float: left;
+			}
+			.path .btn {
+				border-color: #35404d;
+				background-color: #35404d;
+				color: #CCCCCC;
+				margin-right: 5px;
+				/*position: absolute;*/
+				
+			}
+			
+			.path .btn:hover,
+			.path .btn:focus {
+				border-color: #35404d;
+				background-color: rosybrown;
+			}
+			/*-----------模态框样式---------------*/
+			
+			.table th {
+				border-top: 1px solid #F0F0F0;
+				border-bottom: 1px solid #f0f0f0;
+				color: #595e66;
+				background: #B9DEF0;
+				font-size: 13px;
+				text-align: center;
+				font-weight: 600;
+			}
+			
+			.table td {
+				color: #61666e;
+				font-size: 13px;
+				text-align: center;
+				border-bottom: 1px solid #f0f0f0;
+			}
+			
+			.modal-table tr td
+			 {
+				background: #fff;
+				padding: 0.5;
+				font-weight: bold;
+				line-height: 40px;
+			}
+			
+			.modal-table tr td input,
+			.modal-table tr td select {
+				width: 100%;
+				padding: 0;
+				height: 35px;
+				font-weight: 100;
+			}
+			
+			.modal-table tr .tb_bg
+			{
+				background: #f5f7fa;
+			}
+			.activeLi{
+				color: orangered;
+			}
+			.overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 6;
+				background: rgba(0, 0, 0, 0.7);
+			}
+			
+			.overlay td:first-child {
+				width: 66px;
+			}
+			
+			.overlay .con {
+				position: absolute;
+				width: 420px;
+				min-height: 300px;
+				background: #fff;
+				left: 50%;
+				top: 50%;
+				-webkit-transform: translate3d(-50%, -50%, 0);
+				transform: translate3d(-50%, -50%, 0);
+				/*margin-top: -150px;*/
+				padding: 20px;
+			}

@@ -1,0 +1,138 @@
+	.admin {
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		top: 85px;
+		left: 220px;
+		overflow-y: auto;
+		overflow-x: hidden;
+		background-color: #f1f2f7;
+	}
+	
+	.line {
+		width: 100%;
+		border-bottom: 1px solid #dfdfdf;
+		margin-bottom: 20px;
+	}
+	
+	.search_input {
+		width: 200px;
+		height: 50px;
+		line-height: 20px;
+		margin: 10px 10px 0 0;
+		float: left;
+	}
+	
+	.search_input span {
+		margin-left: 15px;
+		font-size: 13px;
+		color: #666;
+		display: inline-block;
+		float: left;
+	}
+	
+	.search_input input {
+		/*width: 1%;*/
+		width: 180px;
+		height: 35px;
+		border: 1px solid #dfdfdf;
+		border-radius: 3px padding: .0rem .75rem;
+		font-size: 13px;
+		color: #444;
+		line-height: 35px;
+		display: inline-block;
+	}
+	
+	.search_input select {
+		width: 180px;
+		height: 35px;
+		border: 1px solid #dfdfdf;
+		border-radius: 3px padding: .0rem .75rem;
+		font-size: 13px;
+		line-height: 35px;
+		display: inline-block;
+	}
+	
+	.search_input .search_btn {
+		width: 80px;
+		height: 35px;
+		font-size: 13px;
+		background: #3ea2ee;
+		border: none;
+		border-radius: 3px;
+		padding: .0rem .75rem;
+		margin-left: 15px;
+		line-height: 1.0;
+		margin-bottom: -4rem;
+	}
+	
+	.search_submit input[type='button'] {
+		width: 80px;
+		height: 35px;
+		font-size: 13px;
+		background: #3ea2ee;
+		border: none;
+		border-radius: 3px;
+		padding: .0rem .75rem;
+		margin-left: 15px;
+		line-height: 1.0;
+	}
+	
+	.search_submit input[type='reset'] {
+		width: 80px;
+		height: 35px;
+		color: #3ea2ee;
+		font-size: 13px;
+		background: none;
+		border: 1px solid #3ea2ee;
+		border-radius: 3px;
+		padding: .0rem .75rem;
+		line-height: 1.0;
+	}
+	
+	.usrBox,
+	.resBox,
+	.resClassifyBox,
+	.logBox,
+	.roleBox,
+	.authorityBox,
+	.roleLogs,
+	.resLogs,
+	.usrLogs,
+	.authorityLogs{
+		margin-left: 20px;
+	}
+	
+	.usrInfo,
+	.resInfo,
+	.resClassifyInfo,
+	.logInfo,
+	.roleInfo,
+	.authorityInfo,
+	.roleLogs,
+	.resLogs,
+	.usrLogs,
+	.authorityLogs{
+		margin-top: 20px;
+	}
+	
+	.search_button {
+		margin-top: 12px;
+	}
+	
+	.deleteBtn>span {
+		color: red;
+	}
+	
+	.updateBtn>span {
+		color: green;
+	}
+	.addSonBtn>span{
+		color: deepskyblue;
+	}
+	
+	.deleteBtn,
+	.updateBtn,
+	.addSonBtn {
+		width: 40px;
+	}

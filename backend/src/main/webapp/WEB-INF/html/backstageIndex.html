@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<title>后台管理</title>
+
+		<!-- Bootstrap -->
+		<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+		<!--[if lt IE 9]>
+      <script src="lib/html5shiv/html5shiv.min.js"></script>
+      <script src="lib/respond/respond.min.js"></script>
+    <![endif]-->
+		<script src="lib/jquery/jquery.min.js"></script>
+		<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+		<script src="js/common_js/sideBarAnimation.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/backstageIndex.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common_js/pageTransition.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			/*--------主内容---------*/
+			
+			.admin {
+				position: fixed;
+				right: 0;
+				bottom: 0;
+				top: 85px;
+				left: 220px;
+				overflow-y: auto;
+				overflow-x: hidden;
+				background-color: #f1f2f7;
+			}
+			
+			.thumbnail {
+				border-color: #CCCCCC;
+				background-color: #CCCCCC;
+			}
+			
+			h3,
+			p {
+				text-align: center;
+			}
+			
+			.row {
+				margin-left: 10px;
+				margin-top: 10px;
+			}
+			
+			.cartogram {
+				margin-left: 2000px;
+			}
+			
+			.cartogram .caption {
+				width: 240px;
+				height: 242px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--
+        	橫向導航欄
+        -->
+		<nav id="x-nav">
+			<img src="img/image002.png" width="100" />
+			<span style="border-left: 1px solid #bbb;">&nbsp;后台管理</span>
+			<ul class="setting">
+				<li>
+					<span class="glyphicon glyphicon-bell">消息</span>
+					
+				</li>
+				<li>
+					<a href="api.html"><span class="glyphicon glyphicon-log-out">退出</span></a>
+
+				</li>
+
+			</ul>
+
+		</nav>
+		<!--
+        	侧方菜单栏
+        -->
+		<div class="sidebar">
+			<div class="adminInfo">
+				<p><span class="glyphicon glyphicon-user"></span>欢迎系统管理员：XXX</p>
+			</div>
+			<hr />
+			<div class="sideMenu">
+				<div class="sideMenuItem">
+					<span class="menuTil " id="resourceMgTil"><span class="glyphicon glyphicon-tags"></span>资源管理</span>
+					<ul id="first">
+						<li>资源列表</li>
+						<li>资源分类</li>
+						<li>资源删除</li>
+						<li>资源授权</li>
+					</ul>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="userMgTil">
+						<span class="glyphicon glyphicon-tags"></span>用户管理
+					</span>
+					<ul id="users">
+						<li>用户列表</li>
+						<li>添加用户</li>
+						<li>删除用户</li>
+					</ul>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="roleMgTil"><span class="glyphicon glyphicon-tags"></span>角色管理</span>
+					<ul id="role">
+						<li>角色列表</li>
+						<li>新增角色</li>
+						<li>删除角色</li>
+						<li>修改角色</li>
+					</ul>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="authorityMgTil"><span class="glyphicon glyphicon-tags"></span>权限管理</span>
+					<ul id="authority">
+						<li>权限定义</li>
+						<li>权限共享</li>
+						<li>权限委托</li>
+
+					</ul>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="logMgTil"><span class="glyphicon glyphicon-tags"></span>日志管理</span>
+					<ul id="log">
+						<li>用户日志</li>
+						<li>角色日志</li>
+						<li>资源日志</li>
+						<li>授权日志</li>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<!--
+        	概况总览
+        -->
+
+		<div class="adminContent">
+			<!--
+            	路徑导航
+            -->
+			<div class="pathNav">
+				<ul class="path">
+					<li>
+						<button class="btn btn-default btn-xs active">首页</button>
+					</li>
+				</ul>
+			</div>
+			<!--
+				概况
+			-->
+			<div class="admin">
+				<div class="row">
+
+					<div class="col-sm-6 col-md-13">
+						<div class="thumbnail">
+							<img src="img/iconshop.png" alt="系统总资源数" width="130">
+							<div class="caption">
+								<h3>系统总资源数</h3>
+								<p>1500</p>
+								<p>
+									<a href="resources.html" class="btn btn-default" role="button">
+                        查看
+                    </a>
+									
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-6 col-md-13">
+						<div class="thumbnail">
+							<img src="img/iconuser.svg" alt="用户数" width="130">
+							<div class="caption">
+								<h3>注册用户</h3>
+								<p>1300</p>
+								<p>
+									<a href="allUsers.html" class="btn btn-default" role="button">
+                       查看
+                    </a>
+									<a href="#" class="btn btn-default" role="button" id="addUser">
+                        添加
+                    </a>
+									<a href="#" class="btn btn-default" role="button" id="shift">
+                      切换角色面板
+                    </a>
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="detailUser" style="display: none;">
+						<div class="col-sm-6 col-md-3">
+							<div class="thumbnail">
+								<img src="img/iconadmin.svg" alt="超级用户数" width="100">
+								<div class="caption">
+									<h3>超级用户</h3>
+									<p>100</p>
+									<p>
+										<a href="#" class="btn btn-default" role="button" id="viewSuperUsr">
+                           查看
+                    </a>
+										<!--<a href="#" class="btn btn-default" role="button">
+                        按钮
+                    </a>-->
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-md-3">
+							<div class="thumbnail">
+								<img src="img/iconcheck.svg" alt="审核用户数" width="100">
+								<div class="caption">
+									<h3>审核用户</h3>
+									<p>100</p>
+									<p>
+										<a href="#" class="btn btn-default" role="button" id="viewAssessor">
+                           查看
+                    </a>
+										<a href="#" class="btn btn-default" role="button" id="addAssessor">
+                        添加
+                    </a>
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-md-3">
+							<div class="thumbnail">
+								<img src="img/icontest.svg" alt="测试用户数" width="100">
+								<div class="caption">
+									<h3>测试用户</h3>
+									<p>100</p>
+									<p>
+										<a href="#" class="btn btn-default" role="button" id="viewTester">
+                          查看
+                    </a>
+										<a href="#" class="btn btn-default" role="button" id="addTester">
+                        添加
+                    </a>
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-md-3">
+							<div class="thumbnail">
+								<img src="img/iconcommon.svg" alt="普通用户数" width="100">
+								<div class="caption">
+									<h3>普通用户</h3>
+									<p>1000</p>
+									<p>
+										<a href="#" class="btn btn-default" role="button" id="viewCommonUsr">
+                       查看
+                    </a>
+										<a href="#" class="btn btn-default" role="button" id="addCommonUser">
+                       添加
+                    </a>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!--
+                    ----------------统计图表------------------
+                    -->
+					<div class="cartogram">
+						<!--
+                        	//资源日发布/录入数折线图
+                        -->
+						<div class="col-sm-6 col-md-3">
+							<div class="thumbnail">
+								<div class="caption" id="ziyuanLineChart">
+								</div>
+							</div>
+						</div>
+						<!--
+                        	//资源七大类别分布饼图
+   -->
+						<div class="col-sm-6 col-md-3">
+							<div class="thumbnail">
+								<div class="caption" id="ziyuanPie">
+								</div>
+							</div>
+						</div>
+
+						<!--
+                        	//	用户日总数折线图
+   					-->
+
+						<div class="col-sm-6 col-md-3">
+							<div class="thumbnail">
+
+								<div class="caption" id="usersLineChart">
+
+								</div>
+							</div>
+						</div>
+
+						<!--
+                        	//	角色分布
+   					-->
+
+						<div class="col-sm-6 col-md-3">
+							<div class="thumbnail">
+
+								<div class="caption" id="usersPie">
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!--添加用户 模态框（Modal） -->
+		<div class="modal" id="myModal" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">添加新用户</h4>
+					</div>
+					<div class="modal-body">
+						<table id="addInfo" class="table modal-table">
+
+							<tbody>
+								<tr>
+									<td class="tb_bg">
+										<label for="">账号ID</label>
+									</td>
+									<td>
+										<input id="addUsrID" type="text" placeholder="请输入账号" class="add" />
+									</td>
+									<td class="tb_bg">
+										<label for="">用户名称</label>
+									</td>
+									<td>
+										<input id="addName" type="text" placeholder="" class="add" />
+									</td>
+
+								</tr>
+								<tr>
+									<td class="tb_bg">
+										<label>注册日期</label>
+									</td>
+									<td>
+										<input id="addDate" type="text" placeholder="请输入注册日期" class="add" />
+
+									</td>
+									<td class="tb_bg">
+										<label>API录入个数</label>
+									</td>
+									<td>
+										<input id="addAPINum" type="text" value="0" class="add" />
+
+									</td>
+								</tr>
+								<tr>
+									<td class="tb_bg">
+										<label for="">角色</label>
+									</td>
+									<td>
+										<select name="" class="add" id="addrole">
+											<option value="" selected>请选择角色</option>
+											<option value="">审核用户</option>
+											<option value="">测试用户</option>
+											<option value="">普通用户</option>
+										</select>
+
+									</td>
+									<td class="tb_bg">
+										<label>密码</label>
+									</td>
+									<td>
+										<input id="addpwd" type="text" placeholder="请输入密码" class="add" data-toggle="tooltip" data-placement="bottom" title="字母与数字组合，长度至少6位" />
+
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" id="saveUser">提交更改</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+		</div>
+		<script src="js/common_js/echarts.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/cartogram.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				/*
+				 * inx:
+				 * 10：查詢超级用户
+				 * 20：查询审核用户
+				 * 30：查询测试用户
+				 * 40：查询普通用户
+				 * 
+				 */
+				function openUsr(inx) {
+					window.open("allUsers.html?id=" + inx + "");
+				}
+				$("#viewSuperUsr").click(function() {
+					openUsr("10");
+				});
+				$("#viewAssessor").click(function() {
+					openUsr("20");
+				});
+				$("#viewTester").click(function() {
+					openUsr("30");
+				});
+				$("#viewCommonUsr").click(function() {
+					openUsr("40");
+				});
+				//用户列表跳转
+				$("#users>li").eq(0).click(function() {
+					location.href = "allUsers.html";
+				});
+				$("#users>li").eq(1).click(function() {
+					addDiffUsr(0);
+				});
+				$("#users>li").eq(2).click(function() {
+					location.href = "allUsers.html";
+				});
+				//权限管理跳转
+				$("#authority>li").eq(0).click(function() {
+					location.href = "authority.html";
+				});
+				//日志管理跳转
+				$("#logMgTil").click(function() {
+					location.href = "logs.html";
+				});
+				//日志跳转
+				$("#log>li").eq(0).click(function() {
+					location.href = "usrLogs.html";
+				});
+				$("#log>li").eq(1).click(function() {
+					location.href = "roleLogs.html";
+				});
+				$("#log>li").eq(2).click(function() {
+					location.href = "resLogs.html";
+				});
+				$("#log>li").eq(3).click(function() {
+					location.href = "authorityLogs.html";
+				});
+				//资源管理跳转
+				$("#first>li").eq(0).click(function() {
+					location.href = "resources.html";
+				});
+				//角色管理跳转
+				$("#role>li").eq(0).click(function() {
+					location.href = "roles.html";
+				});
+			});
+		</script>
+
+	</body>
+
+</html>

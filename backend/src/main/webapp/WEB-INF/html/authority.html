@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+		<title>权限管理</title>
+
+		<!-- Bootstrap -->
+		<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="css/tb.css" />
+		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+		<!--[if lt IE 9]>
+      <script src="lib/html5shiv/html5shiv.min.js"></script>
+      <script src="lib/respond/respond.min.js"></script>
+    <![endif]-->
+		<script type="text/javascript" src="js/myVue.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+
+		<script src="lib/jquery/jquery.min.js"></script>
+		<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+		<script src="js/common_js/del.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common_js/sideBarAnimation.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common_js/closeModal.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/authority.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.sideMenuItem:nth-child(4) {
+				background-color: #35404d;
+			}
+			
+			.sideMenuItem:nth-child(4)>ul {
+				display: block;
+			}
+			
+			img {
+				margin-right: 5px;
+			}
+			
+			.modal-dialog {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
+			
+			.modal-content {
+				/*overflow-y: scroll; */
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				width: 100%;
+			}
+			
+			.modal-body {
+				overflow-y: scroll;
+				position: absolute;
+				top: 55px;
+				bottom: 65px;
+				width: 100%;
+			}
+			
+			.modal-header .close {
+				margin-right: 15px;
+			}
+			
+			.modal-footer {
+				position: absolute;
+				width: 100%;
+				bottom: 0;
+			}
+			
+			.firstSonItems {
+				display: none;
+				margin-left: 20px;
+			}
+			
+			.secondSonItems {
+				display: none;
+				margin-left: 40px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<!--
+	   	橫向導航欄
+        -->
+		<nav id="x-nav">
+			<img src="img/image002.png" width="100" />
+			<span style="border-left: 1px solid #bbb;">&nbsp;后台管理</span>
+			<ul class="setting">
+				<li>
+					<span class="glyphicon glyphicon-bell">消息<span>
+					
+				</li>
+				<li>
+				<a href="index.html"><span class="glyphicon glyphicon-log-out" >退出</span></a>
+
+				</li>
+
+			</ul>
+
+		</nav>
+		<!--
+        	侧方菜单栏
+        -->
+		<div class="sidebar">
+			<div class="adminInfo">
+				<p><span class="glyphicon glyphicon-user"></span>欢迎系统管理员：XXX</p>
+			</div>
+			<hr />
+			<div class="sideMenu">
+				<div class="sideMenuItem">
+					<span class="menuTil " id="resourceMgTil"><span class="glyphicon glyphicon-tags"></span>资源管理</span>
+
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="userMgTil">
+						<span class="glyphicon glyphicon-tags"></span>用户管理
+					</span>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="roleMgTil"><span class="glyphicon glyphicon-tags"></span>角色管理</span>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="authorityMgTil"><span class="glyphicon glyphicon-tags"></span>权限管理</span>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="logMgTil"><span class="glyphicon glyphicon-tags"></span>日志管理</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="adminContent">
+			<!--
+            	路徑导航
+            -->
+			<div class="pathNav">
+				<ul class="path">
+					<li>
+						<button class="btn btn-default btn-xs active">首页</button>
+					</li>
+					<li>
+						<button class="btn btn-default btn-xs active">权限管理</button>
+					</li>
+				</ul>
+			</div>
+			<!--
+				主内容
+			-->
+			<div class="admin" id="admin">
+				<div class="authorityBox">
+					<div class="title">
+						<h2><img src="img/permission.svg" width="50"/>角色权限</h2>
+					</div>
+					<div class="line"> </div>
+					
+					<!--搜索输入框及查询、重置按钮-->
+					<div class="container search_box">
+						<div>
+							<span>查询：</span>
+							<input type="text" placeholder="请输入要查询的关键字" @input="search" list="searchs" class="search-input">
+							<datalist id="searchs">
+                					<option v-for="item in searchList" :value="item"></option>
+           					</datalist>
+							<input type="button" class="btn btn-primary search_btn" @click="changeAddOverlay" value="新增">
+						</div>
+					</div>
+					<div class="authorityInfo">
+						<table border="" cellspacing="" cellpadding="" class="table table-hover" id="logList">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>路径</th>
+									<!--<th>角色名</th>-->
+									<th>动作名</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr v-cloak v-for="(item, index) of permissionList">
+									<td>{{item.id}}</td>
+									<td>{{item.url}}</td>
+									<td>{{item.action}}</td>
+									<td>
+										<button @click="showPermissionUpdate(index)" type="button" class="btn btn-default updateBtn"><span class="glyphicon glyphicon-pencil"></span></button>
+										<!--<button @click="showPermissionUpdate(item.id)" class="btn btn-default updateBtn"><span class="glyphicon glyphicon-user"></span></button>-->
+										<button @click="deletePermission(item.id)" class="btn btn-default deleteBtn"><span class="glyphicon glyphicon-trash"></span></button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						
+					</div>
+
+				</div>
+				<update-modal :permission='selectedPermission' :isactive='isUpdateActive' v-cloak @change='changeUpdateOverlay' @modify='updatePermission'></update-modal>
+				<add-modal :permission='addingPermission' :isactive='isAddPermissionActive' v-cloak @change="changeAddOverlay" @add="addPermission"></add-modal>
+			</div>
+
+		</div>
+		<!--编辑权限模态框（Modal） -->
+		<div class="modal" id="editPermissionMd" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="title" id="myModalLabel">编辑权限</h4>
+					</div>
+					<div class="modal-body" id="editPermissionMb">
+						<form role="form">
+							<div class="form-group">
+								<label for="name">ID</label>
+								<input type="text" class="form-control" id="role" placeholder="" disabled>
+							</div>
+							<div class="form-group">
+								<label for="name">角色</label>
+								<input type="text" class="form-control" id="roleName" placeholder="请输入名称">
+							</div>
+							<div class="form-group">
+								<label for="permissionDes">描述</label>
+								<textarea class="form-control" rows="3"></textarea>
+							</div>
+							<label for="name">权限</label>
+							<div class="checkbox">
+								<label>
+												<input type="checkbox" value="">主页面查看</label>
+							</div>
+							<div class="checkbox">
+								<label>
+												<input type="checkbox" value="" class="backStageItem">后台登录+</label>
+							</div>
+							<div class="firstSonItems">
+								<div class="checkbox">
+									<label>
+													<input type="checkbox" value="" class="usrItem">用户管理+</label>
+								</div>
+								<div class="secondSonItems">
+									<div class="checkbox">
+										<label>
+															<input type="checkbox" value="">查看用户列表</label>
+									</div>
+									<div class="checkbox">
+										<label>
+															<input type="checkbox" value="">添加用户</label>
+									</div>
+									<div class="checkbox">
+										<label>
+															<input type="checkbox" value="">删除用户</label>
+									</div>
+								</div>
+								<div class="checkbox">
+									<label>
+													<input type="checkbox" value="">权限管理+</label>
+								</div>
+								<div class="checkbox">
+									<label>
+													<input type="checkbox" value="">资源管理+</label>
+								</div>
+								<div class="checkbox">
+									<label>
+													<input type="checkbox" value="">角色管理+</label>
+								</div>
+								<div class="checkbox">
+									<label>
+													<input type="checkbox" value="">日志管理+</label>
+								</div>
+							</div>
+							<div class="checkbox">
+								<label>
+												<input type="checkbox" value="" id="backStageItem">api录入</label>
+							</div>
+							<div class="checkbox">
+								<label>
+												<input type="checkbox" value="" id="backStageItem">api审核</label>
+							</div>
+							<div class="checkbox">
+								<label>
+												<input type="checkbox" value="" id="backStageItem">api测试</label>
+							</div>
+
+						</form>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-warning" id="saveUpdate">确认修改</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+
+		<!--委托权限模态框（Modal） -->
+		<div class="modal" id="authorizeMd" style="display: none;">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="title" id="myModalLabel">委托权限</h4>
+					</div>
+					<div class="modal-body" id="addPermissionMb">
+						<form role="form">
+							<div class="form-group">
+								<label for="name">ID</label>
+								<input type="number" name="" id="roleId" value="" class="form-control" />
+
+							</div>
+							<div class="form-group">
+								<label for="name">角色</label>
+								<input type="text" class="form-control" id="roleName" placeholder="请输入名称">
+							</div>
+							<div class="form-group">
+								<label for="permissionDes">描述</label>
+								<textarea class="form-control" rows="3"></textarea>
+							</div>
+							<label for="name">权限</label>
+							<div class="checkbox">
+								<label>
+												<input type="checkbox" value="">主页面查看</label>
+							</div>
+							<div class="checkbox">
+								<label>
+												<input type="checkbox" value="" class="backStageItem">后台登录+</label>
+							</div>
+							<div class="firstSonItems">
+								<div class="checkbox">
+									<label>
+													<input type="checkbox" value="" class="usrItem">用户管理+</label>
+								</div>
+								<div class="secondSonItems">
+									<div class="checkbox">
+										<label>
+															<input type="checkbox" value="">查看用户列表</label>
+									</div>
+									<div class="checkbox">
+										<label>
+															<input type="checkbox" value="">添加用户</label>
+									</div>
+									<div class="checkbox">
+										<label>
+															<input type="checkbox" value="">删除用户</label>
+									</div>
+								</div>
+								<div class="checkbox">
+									<label>
+													<input type="checkbox" value="">权限管理+</label>
+								</div>
+								<div class="checkbox">
+									<label>
+													<input type="checkbox" value="">资源管理+</label>
+								</div>
+								<div class="checkbox">
+									<label>
+													<input type="checkbox" value="">角色管理+</label>
+								</div>
+								<div class="checkbox">
+									<label>
+													<input type="checkbox" value="">日志管理+</label>
+								</div>
+							</div>
+							<div class="checkbox">
+								<label>
+												<input type="checkbox" value="" id="backStageItem">api录入</label>
+							</div>
+							<div class="checkbox">
+								<label>
+												<input type="checkbox" value="" id="backStageItem">api审核</label>
+							</div>
+							<div class="checkbox">
+								<label>
+												<input type="checkbox" value="" id="backStageItem">api测试</label>
+							</div>
+
+						</form>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-warning" id="saveAdd">确认增加</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+
+		<script type="text/javascript">
+			$(function() {
+				//路径导航跳转
+				$(".path>li").eq(0).click(function() {
+					location.href = "backstageIndex.html";
+				});
+				//---------------侧方菜单动画----------------------
+				sideBarAnimation("#authority");
+
+			});
+		</script>
+		<script src="js/common_js/pageTransition.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			Vue.http.options.emulateHTTP = true;
+			Vue.http.options.headers = {
+    			'authToken':localStorage.getItem('token')
+			}  
+			Vue.component('update-modal', {
+				props: ['permission', 'isactive'],
+				template: `<div class="overlay" v-show="isactive">
+                        <div class="con">
+                        <h2 class="title">修改 </h2>
+                        <div class="content">
+                        <table class="table modal-table">
+                        <tr>
+                        <td>id:</td>
+                        <td><input type="text" v-model="permission.id" readonly='true'></td>
+                        </tr>
+                        <tr>
+                        <td>路径:</td>
+                        <td><input type="text" v-model="permission.url"></td>
+                        </tr>
+                        <tr>
+                        <td>动作名: </td>
+                        <td><input type="text" v-model="permission.action"></td>
+                        </tr>
+                        </table>
+                        <p align="center">
+                        <input type="button" @click="changeActive" value="取消">
+                        <input type="button" @click="modify" value="修改">
+                        </p>
+                        </div>
+                        </div>
+                </div>`,
+				computed: {
+					Permission() {
+						return this.perimission;
+					}
+				},
+				methods: {
+					changeActive() {
+						this.$emit('change');
+					},
+					modify() {
+						this.$emit('modify', this.permission);
+					}
+				}
+			});
+
+			//增加用户模态框
+			Vue.component('add-modal', {
+				props: ['permission', 'isactive'],
+				template: `<div class="overlay" v-show="isactive">
+                        <div class="con">
+                        <h2 class="title">新增 </h2>
+                        <div class="content">
+                        <table class="table modal-table">
+                        <tr>
+                        <td>权限ID:</td>
+                        <td><input type="text" v-model="permission.id"></td>
+                        </tr>
+                        <tr>
+                        <td>路径:</td>
+                        <td><input type="text" v-model="permission.url"></td>
+                        </tr>
+                        <tr>
+                        <td>动作名:</td>
+                        <td><input type="text" v-model="permission.action"></td>
+                        </tr>
+                        </table>
+                        <p align="center">
+                        <input type="button" @click="change" value="取消">
+                        <input type="button" @click="add" value="添加">
+                        </p>
+                        </div>
+                        </div>
+                </div>`,
+				computed: {
+					Permission() {
+						return this.permission;
+					}
+				},
+				methods: {
+					change() {
+						this.$emit('change');
+					},
+					add() {
+						this.$emit('add', this.Permission);
+					}
+				}
+			});
+
+			var authority = new Vue({
+				el: '#admin',
+				data: {
+					permissionList: [],
+					list: [{
+							id: '1',
+							url: '/Super/AddUser',
+							action: '新增用户'
+						},
+						{
+							id: '2',
+							url: '/super/DeleteUser',
+							action: '删除用户'
+						}
+					],
+					isUpdateActive: false,
+					isAddPermissionActive: false,
+					selectedIndex: -1,
+					selectedPermission: {},
+					addingPermission: {},
+					searchList: []
+
+				},
+				mounted: function() {
+					this.showPermission();
+				},
+				methods: {
+					showPermission: function() {
+						this.$http.get('http://csust.ngrok.xiaomiqiu.cn/apishop/config/listPermission'
+						
+						).then(
+							function(data) {
+								console.log(data.body);
+								data = data.body;
+								this.list = data;
+								this.setPermissionList(this.list);
+							},
+							function() {
+								alert("查看权限信息失败！请稍后重试！");
+							}
+						);
+					},
+					setPermissionList: function(arr) {
+						this.permissionList = arr;
+					},
+					addPermission: function(permission) {
+						this.$http.post(
+							'http://csust.ngrok.xiaomiqiu.cn/apishop/config/addPermission', {
+								url: permission.url,
+								action: permission.action
+							}, 
+							
+							{
+								emulateJSON: true
+							}
+						).then(
+							function(data) {
+								if(data.bodyText == 'success') {
+									alert('添加成功');
+									this.showPermission();
+									this.changeAddOverlay();
+									this.addingPermission = {};
+									this.showPermission();
+								} else {
+									alert(data.bodyText);
+								}
+
+							},
+							function() {
+								alert("定义该权限失败！请稍后重试！");
+							}
+						);
+					},
+					showPermissionUpdate: function(index) {
+						this.selectedIndex = index;
+						this.selectedPermission = JSON.parse(JSON.stringify(this.permissionList[index]));
+						this.changeUpdateOverlay();
+					},
+					updatePermission: function(permission) {
+						this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/config/updatePermission', {
+							'id': permission.id,
+							'url': permission.url,
+							'action': permission.action
+
+						}, 
+						
+						{
+							emulateJSON: true
+						}).then(
+							function(data) {
+								if(data.bodyText == 'success') {
+									alert('修改成功');
+								} else {
+									alert(data.bodyText);
+								}
+								this.changeUpdateOverlay();
+								this.showPermission();
+							},
+							function() {
+								alert("修改权限信息失败！请稍后重试！");
+							}
+						);
+					},
+					deletePermission(id) {
+						if(window.confirm('你确定要删除吗？此操作无法撤销')) {
+							this.$http.post(
+								'http://csust.ngrok.xiaomiqiu.cn/apishop/config/deletePermission', {
+									id: id
+								}, 
+								
+								{
+									emulateJSON: true
+								}
+							).then(
+								function(data) {
+									if(data.bodyText == 'success') {
+										alert('删除成功');
+									} else {
+										alert(data.bodyText);
+									}
+									this.showPermission();
+								},
+								function() {
+									alert("删除该权限失败！请稍后重试！");
+								}
+							);
+						} else {
+							//alert("取消");
+							return false;
+						}
+					},
+					//查找角色名称
+					search(e) {
+						var v = e.target.value,
+							self = this;
+						self.searchList = [];
+						if(v) {
+							var ss = [];
+							// 过滤需要的数据
+							this.list.forEach(function(item) {
+								if(item.action.indexOf(v) > -1) {
+									if(self.searchList.indexOf(item.action) == -1) {
+										self.searchList.push(item.action);
+									}
+									ss.push(item);
+								}
+							});
+							this.setPermissionList(ss); // 将过滤后的数据给了slist
+						} else {
+							// 没有搜索内容，则展示全部数据
+							this.setPermissionList(this.list);
+						}
+					},
+					changeUpdateOverlay: function() {
+						this.isUpdateActive = !this.isUpdateActive;
+					},
+					changeAddOverlay: function() {
+						this.isAddPermissionActive = !this.isAddPermissionActive;
+					}
+				}
+			})
+		</script>
+	</body>
+
+</html>

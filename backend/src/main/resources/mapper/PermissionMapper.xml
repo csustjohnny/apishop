@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="apishop.mapper.PermissionMapper">
+
+      <sql id="permission">
+         id,url,action
+      </sql>
+
+<!--通过用户名查询用户所拥有的权限  -->        
+      <select id="listPermissions" resultType="String">
+        select p.url
+        from user as u
+        left join user_role as ur 
+           on u.id=ur.uid
+        left join role as r
+           on ur.rid = r.id
+        left join role_permission as rp
+           on r.id = rp.rid
+        left join permission as p
+           on rp.pid = p.id
+        where u.userName=#{userName} 
+      </select>  
+
+<!--查询所有权限  -->
+      <select id="list" resultType="Permission">
+       select 
+            <include refid="permission"></include>
+       from permission
+      </select>
+      
+ <!--新增一条权限  -->
+      <insert id="add" parameterType="Permission">
+        insert into permission(url,action)
+        values(#{url},#{action})
+      </insert>
+ 
+ <!--删除一条权限  -->
+      <delete id="deleteById">
+       delete from permission
+          where id=#{id}
+      </delete>
+      
+ <!--查询一条权限  -->
+       <select id="getById"  resultType="Permission">
+         select 
+               <include refid="permission"></include>
+         from permission
+         where id=#{id}
+       </select>
+ 
+  <!--更新一条权限  -->      
+   <select id="update"  parameterType="Permission">
+        update  permission 
+           set url=#{url},action=#{action}
+           where id=#{id}
+       </select>    
+    
+  <!--判断该路径是否需要拦截  -->  
+   <select id="needInterceptor" resultType="boolean">
+   <![CDATA[ select count(id) from permission where url = #{requestURI} ]]>
+   </select>   
+   
+   <!-- 通过角色查询角色所拥有的权限 -->
+   <select id="listRolePermissions" parameterType="Role" resultType="Permission">
+      select p.id,p.url,p.action
+          from permission  as p
+          left join role_permission as rp on p.id = rp.pid
+          left join role as r on r.id = rp.rid
+          where r.role=#{role}      
+   </select>
+   
+ <!-- 通过url查询所描述的动作 -->
+    <select id="getActionByUrl" resultType="String">
+      select action from permission where url=#{requestURI}
+    </select>  
+</mapper>

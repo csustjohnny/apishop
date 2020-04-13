@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/personal.css"/>
+    <script src="js/myVue.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+</head>
+<body>
+<header class="header">
+    <div class="header-wrap">
+        <div class="header-logo"></div>
+        <div class="header-line"></div>
+        <span class="subtitle">个人中心</span>
+        <div class="header-right">
+            <a href="index.html"><span class="glyphicon glyphicon-home"></span>&nbsp;首页</a>
+            <a href=""><span class="glyphicon glyphicon-bell"></span>&nbsp;消息</a>
+        </div>
+    </div>
+</header>
+<hr/>
+<div class="main">
+    <div class="left">
+        <div class="sideMenu">
+            <div class="sideMenuItem">
+                <span class="menuTil "><span class="glyphicon glyphicon-user"></span>账户管理</span>
+                <ul id="users">
+                    <li>用户设置</li>
+                    <li>身份认证</li>
+                </ul>
+            </div>
+            <div class="sideMenuItem">
+                <span class="menuTil"><span class="glyphicon glyphicon-bell"></span>消息管理</span>
+                <ul id="news">
+                    <li>用户消息</li>
+                    <li>官方公告</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+      <div class="user" id="tag0">
+        <div class="top">
+            <h4>账户信息&nbsp;<span class="glyphicon glyphicon-question-sign"></span></h4>
+            <hr/>
+            <div class="chgusername">
+             用户名
+            <br/>
+            <input type="text" name="username" placeholder="用户名" style="width: 220px;"/>
+            <br/>
+            <button type="submit">保存</button>
+            </div>
+            <div class="chgname">
+            用户昵称
+            <br/>
+            <input type="text" name="name" placeholder="用户昵称" style="width: 220px;"/>
+            <br/>
+            <button type="submit">保存</button>
+            </div>
+        </div>
+        <div class="bottom">
+            <h4>修改密码&nbsp;<span class="glyphicon glyphicon-question-sign"></span></h4>
+            <hr/>
+            <div class="chgpwd">
+                旧密码
+                <br/>
+                <input type="text" name="name" placeholder="旧密码" style="width: 220px;"/>
+                <br/>
+                新密码
+                <br/>
+                <input type="text" name="name" placeholder="新密码" style="width: 220px;"/>
+                <br/>
+                确认新密码
+                <br/>
+                <input type="text" name="name" placeholder="确认新密码" style="width: 220px;"/>
+                <br/>
+                <button type="submit" style="margin-top: 5px;">保存</button>
+            </div>
+        </div>
+      </div>
+      <div class="identity" id="tag1">
+          <h4>开发者信息</h4>
+          <hr/>
+          <div class="developer-msg">
+              <p>*</p>&nbsp;姓名：
+              <br/>
+              <input type="text" name="name" style="width: 220px;"/>
+              <br/>
+              <p>*</p>&nbsp;身份证号码：
+              <br/>
+              <input type="text" name="name" style="width: 220px;"/>
+              <br/>
+              <p>*</p>&nbsp;身份证正面：
+              <br/>
+              <input type="text" name="name" placeholder="未选择任何文件" style="width: 220px;"/>
+              <button type="submit">选择文件</button>
+              <span>温馨提示：图片大小不超过2M，支持JPG，PNG格式</span>
+              <br/>
+              <p>*</p>&nbsp;身份证反面：
+              <br/>
+              <input type="text" name="name" placeholder="未选择任何文件" style="width: 220px;"/>
+              <button type="submit">选择文件</button>
+              <span>温馨提示：图片大小不超过2M，支持JPG，PNG格式</span>
+              <br/>
+              <button type="submit" style="margin-top: 10px;">提交认证</button>
+          </div>
+      </div>
+      <div class="message" id="tag2">
+          <a href=""><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;清空消息</a>
+          <hr/>
+          <ul>
+              <li>类型</li>
+              <li style="margin-right: 600px;">消息</li>
+              <li>时间</li>
+          </ul>
+          <hr/>
+          <div class="details">尚无任何消息</div>
+      </div>
+      <div class="message" id="tag3">
+          <a href=""><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;清空公告</a>
+          <hr/>
+          <ul>
+              <li style="margin-right: 600px;">公告标题</li>
+              <li style="margin-right: 100px;">时间</li>
+              <li>操作</li>
+          </ul>
+          <hr/>
+          <div class="details">尚无任何公告</div>
+      </div>
+    </div>
+</div>
+<script type="application/javascript" src="js/jquery.min.js"></script>
+<script type="application/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/personal.js"></script>
+</body>
+</html>

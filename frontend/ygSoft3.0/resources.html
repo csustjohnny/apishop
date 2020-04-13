@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<title>资源管理</title>
+
+		<!-- Bootstrap -->
+		<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="css/tb.css" />
+		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+		<!--[if lt IE 9]>
+      <script src="lib/html5shiv/html5shiv.min.js"></script>
+      <script src="lib/respond/respond.min.js"></script>
+    <![endif]-->
+
+		<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+		<script src="lib/jquery/jquery.min.js"></script>
+		<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+		<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+		<script src="js/common_js/del.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common_js/closeModal.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common_js/sideBarAnimation.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/resourcesManage.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/myVue.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		<style type="text/css">
+			.sideMenuItem:nth-child(1) {
+				background-color: #35404d;
+			}
+			
+			.sideMenuItem:nth-child(1)>ul {
+				display: block;
+			}
+			
+			.search_input {
+				width: 170px;
+				height: 50px;
+				line-height: 20px;
+				margin: 10px 10px 0 0;
+				float: left;
+			}
+			
+			.search_input .search_btn {
+				margin-bottom: -4.3rem;
+			}
+			
+			#managerCode {
+				width: 100%;
+			}
+			
+			img {
+				margin-right: 5px;
+			}
+			
+			.resInfo {
+				position: relative;
+			}
+			
+			.fenye {
+				position: absolute;
+				right: 3%;
+				bottom: -27px;
+			}
+			/*.middle::-webkit-scrollbar {
+				height: 8px;
+			}*/
+			/* 滚动槽 */
+			/*.middle::-webkit-scrollbar-track {
+				border-radius: 10px;
+			}*/
+			/* 滚动条滑块 */
+			/*.middle::-webkit-scrollbar-thumb {
+				background: #ccc;
+			}*/
+			/** {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				font-family: "微软雅黑";
+			}*/
+			
+			#tabPanel {
+				width: 100%;
+				/*height: 300px;*/
+				margin: 10px auto;
+			}
+			
+			.left {
+				float: left;
+				margin-left: 5%;
+				height: auto;
+				width: 300px;
+				font-size: 0;
+			}
+			
+			.left .item,
+			.right .item,
+			.middle .item {
+				margin-top: 0px;
+				display: inline-block;
+				width: 100px;
+			}
+			
+			.middle .outline {
+				display: inline-block;
+				width: 150px;
+			}
+			
+			.middle .outline span {
+				display: block;
+				height: 50px;
+				text-align: center;
+				line-height: 50px;
+				font-size: 14px;
+				border: 1px solid #eee;
+			}
+			
+			.left .item span,
+			.middle .item span,
+			.left .item span {
+				display: block;
+				height: 50px;
+				text-align: center;
+				line-height: 50px;
+				font-size: 14px;
+				border: 1px solid #eee;
+			}
+			
+			.right .item {
+				width: 200px;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				border: 1px solid #eee;
+			}
+			
+			.right .item span {
+				display: inline-block;
+				border: none;
+				/*color: blue;*/
+				/*text-decoration: underline;*/
+				/*cursor: pointer;*/
+			}
+			
+			.middle {
+				float: left;
+				width: 400px;
+				height: auto;
+				font-size: 0;
+				/*overflow-x: scroll;*/
+				overflow-y: hidden;
+			}
+			
+			.right {
+				float: left;
+				height: 300px;
+				width: 200px;
+			}
+			
+			#tabPanel .chooseItem {
+				padding: 10px 0;
+			}
+			
+			#tabPanel .chooseItem label {
+				padding: 0 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--
+	   	橫向導航欄
+        -->
+		<nav id="x-nav">
+			<img src="img/image002.png" width="100" />
+			<span style="border-left: 1px solid #bbb;">&nbsp;后台管理</span>
+			<ul class="setting">
+				<li>
+					<span class="glyphicon glyphicon-bell">消息<span>
+					
+				</li>
+				<li>
+				<a href="index.html"><span class="glyphicon glyphicon-log-out" >退出</span></a>
+				</li>
+
+			</ul>
+
+		</nav>
+		<!--
+        	侧方菜单栏
+        -->
+		<div class="sidebar">
+			<div class="adminInfo">
+				<p><span class="glyphicon glyphicon-user"></span>欢迎系统管理员：XXX</p>
+			</div>
+			<hr />
+			<div class="sideMenu">
+				<div class="sideMenuItem">
+					<span class="menuTil " id="resourceMgTil"><span class="glyphicon glyphicon-tags"></span>资源管理</span>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="userMgTil">
+						<span class="glyphicon glyphicon-tags"></span>用户管理
+					</span>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="roleMgTil"><span class="glyphicon glyphicon-tags"></span>角色管理</span>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="authorityMgTil"><span class="glyphicon glyphicon-tags"></span>权限管理</span>
+				</div>
+				<div class="sideMenuItem">
+					<span class="menuTil" id="logMgTil"><span class="glyphicon glyphicon-tags"></span>日志管理</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="adminContent" id="adminContent">
+			<!--
+            	路徑导航
+            -->
+			<div class="pathNav">
+				<ul class="path">
+					<li>
+						<button class="btn btn-default btn-xs active">首页</button>
+					</li>
+					<li>
+						<button class="btn btn-default btn-xs active">资源管理</button>
+					</li>
+				</ul>
+			</div>
+			<!--
+				主内容
+			-->
+			<div class="admin">
+				<div class="resBox">
+					<div class="title">
+						<h2><img src="img/resources.png" width="50"/>资源列表</h2>
+
+					</div>
+					<div class="line"> </div>
+					<label>状态类别：</label>
+					<input type="radio" id="1" value="未审核" v-model="status" />
+					<label for="1">未审核</label>
+					<input type="radio" id="2" value="审核失败" v-model="status" />
+					<label for="2">审核失败</label>
+					<input type="radio" id="3" value="审核通过" v-model="status" />
+					<label for="3">审核通过</label>
+					<input type="radio" id="4" value="测试失败" v-model="status" />
+					<label for="4">测试失败</label>
+					<input type="radio" id="5" value="测试通过" v-model="status" />
+					<label for="5">测试通过</label>
+					<input @click="getApis()" type="button" value="查找" class="btn btn-primary search_btn" />
+					
+				</div>
+				<div id="tabPanel">
+					<!--<label>显示的选项：</label><br>-->
+					<div class="chooseItem">
+						<label @click="chooseFile()"><input type="checkbox" @click.stop="" v-model="field.apiAddress">请求地址</label>
+						<label @click="chooseFile()"><input type="checkbox" @click.stop="" v-model="field.protocol">协议</label>
+						<label @click="chooseFile()"><input type="checkbox" @click.stop="" v-model="field.requestType">请求方式</label>
+						<label @click="chooseFile()"><input type="checkbox" @click.stop="" v-model="field.requestDataFormat">请求数据类型</label>
+						<label @click="chooseFile()"><input type="checkbox" @click.stop="" v-model="field.returnDataFormat">返回数据类型</label>
+						<label @click="chooseFile()"><input type="checkbox" @click.stop="" v-model="field.outline">概要说明</label>
+						<label @click="chooseFile()"><input type="checkbox" @click.stop="" v-model="field.time">录入时间</label>
+						<label @click="chooseFile()"><input type="checkbox" @click.stop="" v-model="field.status">审核状态</label>
+						<label @click="chooseFile()"><input type="checkbox" @click.stop="" v-model="field.publisher">发布的用户</label>
+						<label @click="chooseFile()"><input type="checkbox" @click.stop="" v-model="field.reviewer">审核人</label>
+					</div>
+					<div class="left">
+						<div class="item">
+							<span>id</span>
+							<span v-for="(item, index) in apis">{{item.id}}</span>
+						</div>
+						<div class="item">
+							<span>api名称</span>
+							<span v-for="(item, index) in apis">{{item.apiName}}</span>
+						</div>
+						<div class="item">
+							<span>api类型</span>
+							<span v-for="(item, index) in apis">{{item.apiType}}</span>
+						</div>
+					</div>
+					<div class="middle">
+						<div :style="{width: (length*100) + 'px'}">
+							<div class="item" v-show="field.apiAddress">
+								<span>请求地址</span>
+								<span v-for="(item, index) in apis">{{item.apiAddress}}</span>
+							</div>
+							<div class="item" v-show="field.requestType">
+								<span>请求方式</span>
+								<span v-for="(item, index) in apis">{{item.requestType}}</span>
+							</div>
+							<div class="item" v-show="field.requestDataFormat">
+								<span>请求数据类型</span>
+								<span v-for="(item, index) in apis">{{item.requestDataFormat}}</span>
+							</div>
+							<div class="item" v-show="field.returnDataFormat">
+								<span>返回数据类型</span>
+								<span v-for="(item, index) in apis">{{item.returnDataFormat}}</span>
+							</div>
+							<div class="item" v-show="field.protocol">
+								<span>请求协议</span>
+								<span v-for="(item, index) in apis">{{item.protocol}}</span>
+							</div>
+							<div class="outline" v-show="field.outline">
+								<span>概要说明</span>
+								<span v-for="(item, index) in apis">{{item.outline}}</span>
+							</div>
+							<div class="item" v-show="field.time">
+								<span>录入时间</span>
+								<span v-for="(item, index) in apis">{{item.time}}</span>
+							</div>
+							<div class="item" v-show="field.publisher">
+								<span>发布人</span>
+								<span v-for="(item, index) in apis">{{item.publisher}}</span>
+							</div>
+							<div class="item" v-show="field.reviewer">
+								<span>审核人</span>
+								<span v-for="(item, index) in apis">{{item.reviewer}}</span>
+							</div>
+							<div class="item" v-show="field.status">
+								<span>审核状态</span>
+								<span v-for="(item, index) in apis">{{item.status}}</span>
+							</div>
+						</div>
+					</div>
+					<div class="right">
+						<div class="item">
+							<span>操作</span>
+						</div>
+						<div class="item" v-for="(item, index) in apis">
+							<button @click="showUpdateOverlay(index)" type="button" class="btn btn-default updateBtn"><span class="glyphicon glyphicon-pencil"></span></button>
+							<button @click="deleteResource(item.id)" class="btn btn-default deleteBtn"><span class="glyphicon glyphicon-trash"></span></button>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<update-modal :resource="selectedResource" :isactive="isUpdateActive" @change="changeUpdateOverlay()" @modify="updateAPI"></update-modal>
+		</div>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				//路径导航跳转
+				$(".path>li").eq(0).click(function() {
+					location.href = "backstageIndex.html";
+				});
+				//---------------侧方菜单动画----------------------
+				sideBarAnimation("#first");
+
+			});
+		</script>
+		<script src="js/common_js/pageTransition.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			Vue.component('update-modal', {
+				props: ['resource', 'isactive'],
+				template: `<div class="overlay" v-show="isactive">
+                        <div class="con">
+                        <h2 class="title">修改信息</h2>
+                        <div class="content">
+                        <table id="updateInfo" class="table modal-table">
+							<tbody>
+								<tr>
+									<td class="tb_bg">
+										<label for="">资源名称</label>
+									</td>
+									<td>
+										<input v-model="resource.apiName" type="text" class="update" />
+									</td>
+									<td class="tb_bg">
+										<label>概要说明</label>
+									</td>
+									<td>
+										<input v-model="resource.outline" type="text" class="update" />
+									</td>
+								</tr>
+								<tr>
+									<td class="tb_bg">
+										<label for="">类型</label>
+									</td>
+									<td>
+										<input type="text" v-model="resource.apiType" />
+									</td>
+									
+								</tr>
+
+							</tbody>
+						</table>
+                        <p align="center">
+                        <input type="button" @click="changeActive" value="取消">
+                        <input type="button" @click="modify" value="修改">
+                        </p>
+                        </div>
+                        </div>
+                </div>`,
+				computed: {
+					User() {
+						return this.resource;
+					}
+				},
+				methods: {
+					changeActive() {
+						this.$emit('change');
+					},
+					modify() {
+
+						this.$emit('modify', this.User);
+					}
+				}
+			});
+			
+			//全局头  
+			Vue.http.options.emulateHTTP = true;
+			Vue.http.options.headers = {
+    			'authToken':localStorage.getItem('token')
+			}  
+
+			var res = new Vue({
+				el: '#adminContent',
+				data: {
+					length: 4,
+					field: {
+						apiAddress: true,
+						requestType: true,
+						requestDataFormat: true,
+						returnDataFormat: true,
+						protocol: false,
+						outline: false,
+						time: false,
+						publisher: false,
+						reviewer: false,
+						status: false
+					},
+					isUpdateActive: false,
+					status: "未审核",
+					apis: [],
+					selectedResource: {},
+				},
+				mounted: function() {
+					this.getApis();
+				},
+				methods: {
+					getApis: function() {
+						 console.log(localStorage.getItem('token'));
+						this.$http.post('http://localhost:8080/apishop/api/getApi',
+						{
+							status: this.status
+						}, 
+						
+						{
+							emulateJSON: true
+						}
+						).then(
+							function(data) {
+								data = data.body;
+								console.log(data);
+								if(data.length == 0) {
+									alert("暂无数据");
+								} else {
+									$.each(data, function(index, value) {
+										if(value.outline == null) {
+											value.outline == '无'
+										}
+										if(value.reviewer == null) {
+											value.reviewer == '无';
+										}
+									});
+								}
+								this.apis = data;
+							},
+							function() {
+								alert("获取角色信息失败！请稍后重试！");
+							}
+						);
+					},
+					deleteResource: function(id) {
+						if(window.confirm('你确定要删除吗？此操作无法撤销')) {
+							this.$http.post('http://localhost:8080/apishop/api/deleteApi', {
+								id: id
+							}, {
+								emulateJSON: true
+							}).then(
+								function(data) {
+									alert("删除成功");
+									this.getApis();
+								},
+								function() {
+									alert("删除api信息失败！请稍后重试！");
+								}
+							);
+						} else {
+							return false;
+						}
+
+					},
+					updateAPI: function(api) {
+						console.log(api);
+                       
+						this.$http.post('http://localhost:8080/apishop/api/updateApi', {
+							apiName: api.apiName,
+							apiType: api.apiType,
+							apiAddress: api.apiAdress,
+							protocol: api.protocol,
+							requestType: api.requestType,
+							requestDataFormat: api.requestDataFormat,
+							returnDataFormat: api.returnDataFormat,
+							outline: api.outline,
+							apiparams: api.apiparams
+						}, {
+							emulateJSON: true
+						}).then(function(data) {
+								console.log(data);
+								if(data.bodyText == 'success'){
+									alert('更改成功');
+								} 
+								else
+									alert(data.bodyText);
+							},
+							function(res) {
+								alert("修改该API失败！请稍后重试！");
+							}
+						);
+					},
+
+					chooseFile: function() {
+						var val = this.field;
+						//this.length = 0;
+						//						var l = 0;
+						for(i in val) {
+							if(val[i]) {
+								this.length = this.length + 1;
+							}
+							//console.log(val.lenght)
+						}
+						if(this.length > 10) {
+							this.length = 10;
+						}
+						console.log(this.length);
+					},
+					middleLength: function() {
+						if(this.length <= 5) {
+							return this.length * 100;
+						} else {
+							return 500;
+						}
+					},
+					showUpdateOverlay: function(index) {
+						this.selectedResource = JSON.parse(JSON.stringify(this.apis[index]));
+						this.changeUpdateOverlay();
+					},
+					changeUpdateOverlay: function() {
+						this.isUpdateActive = !this.isUpdateActive;
+					}
+
+				}
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API Shop，为开发者提供最全面的API服务</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+</head>
+<body>
+<header class="header">
+<div class="header-wrap">
+    <div class="header-logo"></div>
+    <nav class="header__nav">
+        <a href="" class="header__nav-item" style="color: red;">首页</a>
+        <a href="api.html" class="header__nav-item" id="outs">API接口</a>
+        <a href="" class="header__nav-item">帮助中心</a>
+        <div class="header__nav-tip"></div>
+    </nav>
+    <div class="header-action">
+        <div class="header-search">
+            <div class="header-search-container">
+                <input type="hidden" id="devalutKeyword" value="短信">
+                <input class="search-input" type="text" id="search-input-v6" name="q" value="" placeholder="短信" autocomplete="off" maxlength="12">
+            </div>
+            <div class="header-search-btn" id="header-search-v6">
+                <span class="glyphicon glyphicon-search"></span>
+            </div>
+        </div>
+        <div class="header-line"></div>
+        <div class="header-status">
+            <a class="header-btn1" href="login.html">登录</a>
+            <a class="header-btn2" href="register.html">注册</a>
+        </div>
+    </div>
+</div>
+<div class="header-dropdown">
+    <div class="header-submenu" id="div-dropdown"  style="display:none;">
+        <div class="submenu-container">
+            <div class="submenu-data">
+                <div class="submenu-data-item">
+                    <a class="submenu-data-type" href="" target="_blank" rel="noopener noreferrer">
+                        <strong>金融征信</strong>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="银行卡四元素校验API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">银行卡四元素校验</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="三网手机实名认证API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">三网手机实名认证</span>
+                    </a>
+                    <a class="submenu-data-name " href="" target="_blank" title="股票数据API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">股票数据</span>
+                        <span class="submenu-data-hot">HOT</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="更多 >>API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">更多 &gt;&gt;</span>
+                    </a>
+                </div>
+                <div class="submenu-data-item">
+                    <a class="submenu-data-type" href="" target="_blank" rel="noopener noreferrer">
+                        <strong>生活常用</strong>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="常用快递API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">常用快递</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="全国天气预报API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">全国天气预报</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="彩票开奖结果查询API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">彩票开奖结果查询</span>
+                        <span class="submenu-data-new">NEW</span>
+                    </a>
+                    <a class="submenu-data-name " href="" target="_blank" title="更多  >>API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">更多  &gt;&gt;</span>
+                    </a>
+                </div>
+                <div class="submenu-data-item">
+                    <a class="submenu-data-type" href="" target="_blank" rel="noopener noreferrer">
+                        <strong>车辆服务</strong>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="全国车辆违章API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">全国车辆违章</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="尾号限行API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">尾号限行</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="全国加油站API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">全国加油站</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="更多 >>API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">更多 &gt;&gt;</span>
+                    </a>
+                </div>
+                <div class="submenu-data-item">
+                    <a class="submenu-data-type" href="" target="_blank" rel="noopener noreferrer">
+                        <strong>短信服务</strong>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="短信API服务API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">短信API服务</span>
+                        <span class="submenu-data-hot">HOT</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="语音验证码API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">语音验证码</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="金融短信API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">金融短信</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="更多 >>API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">更多 &gt;&gt;</span>
+                    </a>
+                </div>
+                <div class="submenu-data-item">
+                    <a class="submenu-data-type" href="" target="_blank" rel="noopener noreferrer">
+                        <strong>位置服务</strong>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="电信基站API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">电信基站</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="地图坐标服务API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">地图坐标服务</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="移动联通基站API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">移动联通基站</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="更多 >>API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">更多 &gt;&gt;</span>
+                    </a>
+                </div>
+                <div class="submenu-data-item">
+                    <a class="submenu-data-type" href="" target="_blank" rel="noopener noreferrer">
+                        <strong>应用开发</strong>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="证件识别API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">证件识别</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="二维码生成API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">二维码生成</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="商标信息查询API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">商标信息查询</span>
+                    </a>
+                    <a class="submenu-data-name" href="" target="_blank" title="更多 >>API" rel="noopener noreferrer">
+                        <span class="submenu-data-text">更多 &gt;&gt;</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</header>
+<hr/>
+<div class="screen-1">
+    <div class="screen-1__lunbotu">
+        <ul class="list">
+            <li class="current"><a href=""><img src="./images/lunbo1.jpg"></a></li>
+            <li><a href=""><img src="./images/lunbo2.jpg"></a></li>
+        </ul>
+        <ul class="count">
+            <li class="current"></li>
+            <li class=""></li>
+        </ul>
+    </div>
+    <div class="screen-1__add">
+        <div class="sub-screen-1__add">
+        <span>如果想让更多人<br/>使用自己<br/>设计的API<br/>请点击下方按钮</span>
+        <a href="">点击进入</a>
+        </div>
+    </div>
+</div>
+<div class="screen-2">
+    <div class="recommendation">
+        <span class="glyphicon glyphicon-heart-empty"></span>
+        <p>推荐API</p>
+    </div>
+    <ul class="api-list-ul">
+        <li class="api-list-li">
+            <div class="api-info">
+                <a href="" target="_blank" rel="noopener noreferrer" title="短信API服务接口">
+                    <h2 class="api-name">短信API服务</h2>
+                </a>
+                <div class="api-price">￥0.0300/次
+                </div>
+            </div>
+            <a class="api-get-btn" href="">申请数据</a>
+        </li>
+        <li class="api-list-li">
+            <div class="api-info">
+                <a href="" target="_blank" rel="noopener noreferrer" title="新闻头条接口">
+                    <h2 class="api-name">新闻头条</h2>
+                </a>
+                <p class="api-price green">免费</p>
+            </div>
+            <a class="api-get-btn" href="">申请数据</a>
+        </li>
+        <li class="api-list-li">
+            <div class="api-info">
+                <a href="" target="_blank" rel="noopener noreferrer" title="全国天气预报接口">
+                    <h2 class="api-name">全国天气预报</h2>
+                </a>
+                <div class="api-price">￥0.0010/次
+                </div>
+            </div>
+            <a class="api-get-btn" href="">申请数据</a>
+        </li>
+        <li class="api-list-li">
+            <div class="api-info">
+                <a href="" target="_blank" rel="noopener noreferrer" title="常用快递接口">
+                    <h2 class="api-name">常用快递</h2>
+                </a>
+                <div class="api-price">￥0.0100/次
+                </div>
+            </div>
+            <a class="api-get-btn" href="">申请数据</a>
+        </li>
+        <li class="api-list-li" style="margin-right: 0px;">
+            <div class="api-info">
+                <a href="" target="_blank" rel="noopener noreferrer" title="商业地产分析接口">
+                    <h2 class="api-name">商业地产分析</h2>
+                </a>
+                <p class="api-price yellow">按实际订单收费</p>
+            </div>
+            <a class="api-get-btn" href="">申请数据</a>
+        </li>
+    </ul>
+</div>
+<footer class="footer">
+    <div class="footer-container">
+            <div class="footer-link">
+                <dl>
+                    <dt>关于我们</dt>
+                    <dd><a href="" target="_blank" rel="noopener noreferrer">服务条款</a></dd>
+                    <dd><a href="" target="_blank" rel="noopener noreferrer">隐私政策</a></dd>
+                </dl>
+                <dl>
+                    <dt>支持</dt>
+                    <dd><a href="" target="_blank" rel="noopener noreferrer">博客</a></dd>
+                    <dd><a href="" target="_blank" rel="noopener noreferrer">用户讨论QQ群</a></dd>
+                </dl>
+                <dl>
+                    <dt>联系我们</dt>
+                    <dd><a href="" target="_blank" rel="noopener noreferrer">联系电话</a></dd>
+                    <dd><a href="" target="_blank" rel="noopener noreferrer">常见问题</a></dd>
+                    <dd><a href="" target="_blank" rel="noopener noreferrer">投诉与建议</a></dd>
+                </dl>
+                <dl>
+                    <dt>解决方案</dt>
+                    <dd><a href="" target="_blank" rel="noopener noreferrer">金融征信解决方案</a></dd>
+                    <dd><a href="" target="_blank" rel="noopener noreferrer">商业地产分析</a></dd>
+                </dl>
+            </div>
+            <div class="footer-img">
+                <img src="./images/smile.jpg" alt=""/>
+            </div>
+    </div>
+</footer>
+<script type="application/javascript" src="js/jquery.min.js"></script>
+<script type="application/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    //鼠标移到API接口
+    (function(){
+        var out = document.getElementById('outs');
+        var dropdown = document.getElementById('div-dropdown');
+        var timer = null;
+        dropdown.onmouseover = out.onmouseover = function(){
+            if(timer) {
+                clearTimeout(timer);
+            }
+            dropdown.style.display = 'block';
+        };
+        dropdown.onmouseout = out.onmouseout = function(){
+            timer = setTimeout(function(){
+                dropdown.style.display = 'none';
+            },100);
+
+        };
+    })();
+    //轮播图
+    var lunbotu=document.getElementsByClassName('screen-1__lunbotu');
+    var uls=document.getElementsByTagName('ul');
+    var imgs=uls[0].getElementsByTagName('li');
+    var btn=uls[1].getElementsByTagName('li');
+    var i=index=0;
+    var play=null;
+    console.log(lunbotu,uls,imgs,btn);
+    function show(a){
+        for(i=0;i<btn.length;i++ ){
+            btn[i].className='';
+            btn[a].className='current';
+        }
+        for(i=0;i<imgs.length;i++){
+            imgs[i].style.opacity=0;
+            imgs[a].style.opacity=1;
+        }
+    }
+    for(i=0;i<btn.length;i++){
+        btn[i].index=i;
+        btn[i].onmouseover=function(){
+            show(this.index);
+            clearInterval(play);
+        }
+    }
+    function autoPlay(){
+        play=setInterval(function(){
+            index++;
+            index>=imgs.length&&(index=0);
+            show(index);
+        },3000)
+    }
+    autoPlay();
+    lunbotu.onmouseover=function(){
+        clearInterval(play);
+    };
+    lunbotu.onmouseout=function(){
+        autoPlay();
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>登录API Shop</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="css/login.css" />
+		<script type="text/javascript" src="js/myVue.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	</head>
+
+	<body>
+		<div class="middle-bg" id="allcontent">
+			<h1>在线观影网站登录</h1>
+			<form class="form-horizontal">
+				<h2>登录</h2>
+				<div class="form_login_div">
+					<div class="col-md-10">
+						<span class="glyphicon glyphicon-user form-control-feedback"></span>
+						<input type="text" class="form-control" v-model="username" id="username" name="username" placeholder="Username" autofocus>
+					</div>
+					<div class="col-md-10">
+						<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+						<input type="password" class="form-control" v-model="password" id="password" name="password" placeholder="Password">
+					</div>
+					<button class="btn btn-lg btn-primary btn-block" type="button" @click="login()">Sign in</button>
+					<p>
+						还未注册？
+						<a href="register.html">点击注册</a>
+					</p>
+				</div>
+			</form>
+		</div>
+		<script type="application/javascript" src="js/jquery.min.js"></script>
+		<script type="application/javascript" src="js/bootstrap.min.js"></script>
+
+		<script>
+			new Vue({
+				el: "#allcontent",
+				data: {
+					username: "",
+					password: "",
+					token: "" // 令牌
+				},
+				methods: {
+					//注册
+					login: function() {
+
+						this.$http.post('http://localhost:8080/apishop/login', {
+							username: this.username,
+							password: this.password
+						}, 
+						
+						{
+							emulateJSON: true
+						}).then(
+							function(data) {
+								console.log(data);
+								console.log(data.body.status);
+								if(data.body.status == '登录失败，用户名或密码错误')
+									alert(data.body.status);
+								else {
+								this.token = data.body.sid;
+								localStorage.setItem('token',this.token);
+									var role = data.body.role;
+									alert("登录成功");
+									if(role.length == 0) {
+										window.location.href = 'apiadd.html';
+									} else {
+										switch(role[0]) {
+											case '测试用户':
+												window.location.href = 'test.html';
+												break;
+											case '系统管理用户':
+												window.location.href = 'resources.html';
+												break;
+											case '普通用户':
+												window.location.href = 'apiadd.html';
+												break;
+											case '审核用户':
+												window.location.href = 'assessorIndex.html';
+												break;
+											default:
+
+										}
+									}
+
+								}
+							},
+							function() {
+								alert("登录失败！请稍后重试！");
+							}
+						);
+					},
+				}
+
+			})
+		</script>
+	</body>
+
+</html>

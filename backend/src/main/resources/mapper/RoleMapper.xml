@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="apishop.mapper.RoleMapper">
+	
+   <sql id="role">
+     r.id,r.role
+   </sql>
+
+   
+ <!-- 通过用户id获取所拥有的角色 -->
+    <select id="getRolesByUid" resultType="Role">
+      select 
+          <include refid="role"></include>
+      from role as r
+      left join user_role as ur
+      on r.id = ur.rid
+      where ur.uid=#{id}
+    </select>  
+ 
+<!-- 查询所有的角色 -->
+     <select id="list"  resultType="Role">
+      select 
+          <include refid="role"></include>
+       from role as r
+     </select>
+ 
+ <!-- 新增角色 -->
+      <insert id="add"  parameterType="Role">
+       insert into role(role)
+       values(#{role})
+      </insert>
+     
+<!--通过id删除角色  -->
+      <delete id="delete">
+       delete from role
+         where id=#{id}
+      </delete>
+      
+ <!--更新一个角色  -->
+      <update id="update" parameterType="Role">
+       update role
+          set role=#{role}
+          where id=#{id}
+      </update> 
+      
+ <!--删除角色所拥有的权限  -->     
+     <delete id="deleteRolePermissions">
+        delete from role_permission
+        where rid=#{rid}
+     </delete>    
+     
+    <!-- 给角色配置权限 -->
+    <insert id="setRolePermissions">
+      insert into role_permission(rid,pid)
+      values
+      <foreach collection="pids" item="item" separator=",">
+       (#{rid},#{item})
+      </foreach>
+    </insert>  
+    
+    
+  <!--删除角色所拥有的一项权限  -->
+     <delete id="deleteRoleOnePermission">
+        delete from role_permission 
+        where rid=#{rid} and pid=#{pid}
+     </delete>
+          
+</mapper>

@@ -1,0 +1,314 @@
+!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>超级管理员核心代码测试</title>
+		<script type="text/javascript" src="js/myVue.js" ></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	</head>
+	<body>
+		<div id="all">			
+			<button @click="getAllUsers()">查询所有用户</button>
+			<button @click="addUser()">添加一个用户</button>
+			<button @click="getUser()">查找一个用户</button>
+			<button @click="deleteUser()">删除一个用户</button>
+			<button @click="getAllUsers()">更新一个用户</button><br />
+			
+			<button @click="addRole()">添加一个角色</button>
+			<button @click="deleteRole()">删除一个角色</button>
+			<button @click="getAllRoles()">查询所有角色</button>
+			<button @click="updateRole()">修改一个角色</button><br />
+			
+			<button @click="permissionDef()">定义一个权限</button>
+			<button @click="searchAllPer()">查看所有权限</button>
+		</div>
+	</body>
+	<script>
+		var vm = new Vue({
+			el: '#all',
+			data:{
+				userId: 4,       //用户id
+				userName:'',      //用户名
+				userPassword:'', //用户密码
+				
+				roleId: '',        //角色id
+				roleName:'',  //角色名
+				rolePer:'',  //角色权限
+				
+				PerId: '',     //权限id
+				perName:'',  //权限名
+				perUrl:'',   //权限url
+				
+				resourceName:'',  //资源名
+				apiName:'',    //api名
+				apiAddress:'',    //api地址
+				apiParameter:'',    //api参数
+				apiMoreMess:'',    //api参数详细信息
+				
+				oneLogRecord:''   //一条日志记录
+			},
+			methods:{
+				//1.用户管理方法
+				//查看所有用户
+				getAllUsers:function(){
+					this.$http.get('http://csust.ngrok.xiaomiqiu.cn/apishop/config/listUser').then(
+						function(data){
+							console.log(data.body);
+						},
+						function(){
+							alert("获取用户信息失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//搜索一个用户 
+				getUser:function(){
+					this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/config/getUser',
+					{userName:"201616080319"},
+					{emulateJSON:true}
+					).then(
+						function(data){
+							console.log(data);
+							alert("查询成功!");
+						},
+						function(){
+							alert("获取用户信息失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//新增一个用户
+				addUser: function(){
+					this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/config/addUser',
+					{userName:"201616080319",password:"123456"},
+					{emulateJSON:true}
+					).then(
+						function(data){
+							console.log(data);
+							alert(data.bodyText);
+						},
+						function(){
+							alert("新增用户信息失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//删除一个用户
+				deleteUser:function(){
+					this.$http.get('http://csust.ngrok.xiaomiqiu.cn/apishop/config/deleteUser',
+					{id:''}
+					).then(
+						function(data){
+							console.log(data);
+							alert(data.bodyText);
+						},
+						function(){
+							alert(uid);
+							alert("删除用户信息失败！请稍后重试！");
+						}
+					);
+				},
+
+				//修改一个用户  例如：用户名
+				updateOneUsers:function(){
+					this.$http.post("").then(
+						function(data){
+							console.log(data);
+						},
+						function(){
+							alert("修改用户信息失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//2. 角色管理
+				//查看所有角色以及他们拥有的权限
+				getAllRoles:function(){
+					this.$http.get('http://csust.ngrok.xiaomiqiu.cn/apishop/config/listRole').then(
+						function(data){
+							console.log(data);
+						},
+						function(){
+							alert("获取角色信息失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//新增一个角色
+				addRole: function(){
+					this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/config/addRole',
+					{name:"审核用户"},
+					{emulateJSON:true}
+					).then(
+						function(data){
+							console.log(data);
+						},
+						function(){
+							alert("新增角色信息失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//删除一个角色
+				deleteRole:function(){
+					this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/config/deleteRole',
+					{id:"审核用户"},
+					{emulateJSON:true}
+					).then(
+						function(data){
+							console.log(data);
+						},
+						function(){
+							alert("删除角色信息失败！请稍后重试！");
+						}
+					);
+				},
+
+				//修改一个角色  例如：角色名，角色权限
+				updateRole:function(){
+					this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/config/updateRole',
+					{name:"审核用户",premissionIds:''},
+					{emulateJSON:true}
+					).then(
+						function(data){
+							console.log(data);
+						},
+						function(){
+							alert("修改角色信息失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//赋予角色给用户
+				endowRoleToUser:function(){
+					this.$http.post("").then(
+						function(data){
+							console.log(data);
+						},
+						function(){
+							alert("赋予该用户此角色失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//3. 权限管理
+				//权限定义
+				permissionDef:function(){
+					this.$http.post(
+						'http://csust.ngrok.xiaomiqiu.cn/apishop/config/addPermission',
+						{url:"",action:""},
+						{emulateJSON:true}
+					).then(
+						function(data){
+							console.log(data);
+						},
+						function(){
+							alert("定义该权限失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//查看所有权限
+				searchAllPer: function(){
+					this.$http.get('http://csust.ngrok.xiaomiqiu.cn/apishop/config/listPermission').then(
+						function(data){
+							console.log(data);
+						},
+						function(){
+							alert("查看权限信息失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//权限委托  给角色委托权限
+				permissionToRole:function(){
+					this.$http.post("").then(
+						function(data){
+							
+						},
+						function(){
+							alert("权限委托失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//4. API管理
+				//资源定义
+				resourceDef: function(){
+					this.$http.post("").then(
+						function(data){
+							
+						},
+						function(){
+							alert("定义该资源信息失败！请稍后重试！");
+						}
+					);
+				},
+
+				//按资源分类查询API
+				searchAPIByRes:function(){
+					this.$http.post("").then(
+						function(data){
+							
+						},
+						function(){
+							alert("搜索信息失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//删除API
+				deleteAPI:function(){
+					this.$http.post("").then(
+						function(data){
+							
+						},
+						function(){
+							alert("删除该API信息失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//是否提供删除资源？
+				
+				//资源授权
+				permissionToRes:function(){
+					this.$http.post("").then(
+						function(data){
+							
+						},
+						function(){
+							alert("授权该资源失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//单个API授权
+				permissionAPI:function(){
+					this.$http.post("").then(
+						function(data){
+							
+						},
+						function(){
+							alert("授权该资源失败！请稍后重试！");
+						}
+					);
+				},
+				
+				//5.日志管理
+				//查看日志
+				viewLog:function(){
+					this.$http.get("").then(
+						function(data){
+							
+						},
+						function(){
+							alert("日志信息显示失败！请稍后重试！");
+						}
+					);
+				},
+	
+			}
+		})
+	</script>
+</html>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="apishop.mapper.UserMapper">
+	
+	  <sql id="user">
+	      id,userName,password,salt
+	  </sql>
+<!--通过用户名查询用户  -->	  
+	  <select id="getByName" resultType="User">
+	   select
+	        <include refid="user"></include>
+	   from user 
+	   where userName=#{name}
+	  </select>
+
+<!--查询所有用户  -->	
+      <select id="listUser" resultType="User">
+       select 
+           id,userName
+       from user
+      </select>
+
+<!-- 新增用户 -->
+      <insert id="add" parameterType="User">
+       insert into user(userName,password,salt)
+       values(#{userName},#{password},#{salt})
+      </insert>
+      
+ <!-- 通过id删除用户 -->
+      <delete id="deleteById">
+       delete from user
+         where id=#{id}
+      </delete>
+      
+ <!--通过id获取用户  --> 
+       <select id="getById" resultType="User">
+        select
+              <include refid="user"></include>
+        from user
+        where id=#{id}
+       </select> 
+  
+  <!-- 更新用户 -->    
+        <update id="update" parameterType="User">
+          update user 
+          <set>
+              <if test="userName!=null">
+               userName=#{userName},
+              </if>
+              <if test="password!=null">
+               password=#{password},
+              </if>
+              <if test="salt">
+               salt=#{salt}
+              </if>
+          </set>
+          where id=#{id}
+         </update>   
+         
+  <!-- 删除用户所具有的的角色 -->
+        <delete id="deleteUserRoles">
+          delete from user_role where uid=#{uid}
+        </delete>
+        
+   <!-- 给用户配置角色 --> 
+        <insert id="addUserRoles" parameterType="java.util.List">
+          insert into user_role(uid,rid)
+          values
+          <foreach collection="rids" item="item" separator=",">
+           (#{uid},#{item})
+          </foreach>
+        </insert>    
+	</mapper>
+	

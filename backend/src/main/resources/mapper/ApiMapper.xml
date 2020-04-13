@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<mapper namespace="apishop.mapper.ApiMapper">
+		
+	  <sql id="api">
+	   apiName,apiType,apiAddress,protocol,requestType,
+	   requestDataFormat,returnDataFormat,outline,time,status,
+	   publisher,reviewer
+	  </sql>
+	
+	  <insert id="addApi" parameterType="Api" useGeneratedKeys="true" keyProperty="id">
+	    insert into api(<include refid="api"></include>)
+	    values(#{apiName},#{apiType},#{apiAddress},#{protocol},#{requestType},
+	           #{requestDataFormat},#{returnDataFormat},#{outline},#{time},#{status},
+	           #{publisher},#{reviewer})    
+	  </insert>
+	
+	  <delete id="deleteApi">
+	    delete from api where id=#{id}
+	  </delete>
+	  
+	  <update id="updateApi"  parameterType="Api">
+	    update api
+	       <set>
+	            <if test="apiName!=null">
+	              apiName=#{apiName},
+	            </if>
+	            <if test="apiType!=null">
+	              apiType=#{apiType},
+	            </if>
+	            <if test="apiAdress!=null">
+	              apiAddress=#{apiAddress},
+	            </if>
+	            <if test="protocol!=null">
+	              protocol=#{protocol},
+	            </if>
+	            <if test="requestType!=null">
+	              requestType=#{requestType},
+	            </if>
+	            <if test="rueqestDataFormat!=null">
+	              requestDataFormat=#{requestDataFormat},
+	            </if>
+	            <if test="returnDataFormat!=null">
+	              returnDataFormat=#{returnDataFormat},
+	            </if>
+	            <if test="outline!=null">
+	              outline=#{outline},
+	            </if>
+	            <if test="time!=null">
+	              time=#{time},
+	            </if>
+	            <if test="status!=null">
+	              status=#{status},
+	            </if>
+	            <if test="outline!=null">
+	              outline=#{outline},
+	            </if>
+	            <if test="publisher!=null">
+	              publisher=#{publisher},
+	            </if>
+	            <if test="reviewer!=null">
+	              reviewer=#{reviewer}
+	            </if>
+	       </set>
+	       where id=#{id}
+	  </update>
+
+<!-- 审核api -->
+      <update id="check" >
+              update api 
+               set status=#{status},
+               reviewer=#{userName}
+                where id in (
+         <foreach collection="aids" item="item" separator=",">
+             #{item} 
+           </foreach>
+           )
+      </update>
+
+	
+	 <select id="getApi"  resultType="Api">
+	    select id,<include refid="api"></include>
+	        from api
+	       <where>
+	            <if test="id!=0">
+	             id=#{id}
+	            </if>
+	            <if test="apiName!=null and apiName!=''">
+	            and apiName like concat('%',#{apiName},'%')  and status="审核通过"
+	            </if>
+	            <if test="apiType!=null and apiType!=''">
+	            and apiType=#{apiType}  and status="审核通过"
+	            </if>
+	            <if test="publisher!=null and publisher!=''">
+	            and publisher=#{publisher} 
+	            </if>
+	            <if test="reviewer!=null and reviewer!=''">
+	            and reviewer=#{reviewer} 
+	            </if>
+	            <if test="status!=null">
+	            and status=#{status}
+	            </if>
+	       </where>
+	 </select>
+	
+<!-- 插入API的参数 -->	
+	<insert id="addApiParam" parameterType="ApiParam">
+	     insert into api_param(paramName,paramType,aid)
+	     values
+	     <foreach collection="apiParams" item="item" separator=",">
+            (#{item.paramName},#{item.paramType},#{item.aid})
+        </foreach>
+	</insert>
+
+<!-- 删除api的参数 -->
+      <delete id="deleteParam">
+         delete from api_param where aid=#{aid}
+      </delete> 
+ 
+ <!-- 通过aid查询api的参数 -->   
+      <select id="getApiParams"  resultType="ApiParam">
+          select id,paramName,paramType
+             from api_param
+             where aid = #{aid}
+      </select>
+    	
+    	
+	</mapper>

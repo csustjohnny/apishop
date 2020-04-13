@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="gb2312">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API Shop，为开发者提供最全面的API服务</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/api.css"/>
+    <script src="js/myVue.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <script src="lib/jquery/jquery.js"></script>
+</head>
+<body>
+<div id="myall">
+<header class="header">
+    <div class="header-wrap">
+        <div class="header-logo"></div>
+        <nav class="header__nav">
+            <a href="index.html" class="header__nav-item">首页</a>
+            <a href="" class="header__nav-item" id="outs" style="color: red;">API接口</a>
+            <a href="" class="header__nav-item">帮助中心</a>
+            <div class="header__nav-tip"></div>
+        </nav>
+        <div class="header-action">
+            <div class="header-search">
+                <div class="header-search-container">
+                    <input type="hidden" id="devalutKeyword" value="短信">
+                    <input class="search-input" type="text" id="search-input-v6" name="q" value="" placeholder="短信" autocomplete="off" maxlength="12">
+                </div>
+                <div class="header-search-btn" id="header-search-v6">
+                    <span class="glyphicon glyphicon-search"></span>
+                </div>
+            </div>
+            <div class="header-line"></div>
+            <div class="header-status">
+                <a class="header-btn1" href="login.html">登录</a>
+                <a class="header-btn2" href="register.html">注册</a>
+            </div>
+        </div>
+    </div>
+</header>
+<hr/>
+<div class="content">
+<div class="api-assort">
+    <p>API分类</p>
+    <span class="api-nav selected"  @click="getAllAPI()">全部</span>
+    <span class="api-nav"  @click="getApiByType('生活常用')">生活常用</span>
+    <span class="api-nav" @click="getApiByType('车辆服务')">车辆服务</span>
+    <span class="api-nav" @click="getApiByType('金融征信')">金融征信</span>
+    <span class="api-nav" @click="getApiByType('位置服务')">位置服务</span>
+    <span class="api-nav" @click="getApiByType('即时通讯')">即时通讯</span>
+    <span class="api-nav" @click="getApiByType('应用开发')">应用开发</span>
+    <span class="api-nav" @click="getApiByType('旅游出行')">旅游出行</span>
+    <span class="api-nav" @click="getApiByType('人工智能')">人工智能</span>
+    <span class="api-nav" @click="getApiByType('文娱体育')">文娱体育</span>
+    <span class="api-nav" @click="getApiByType('充值缴费')">充值缴费</span>
+</div>
+<div class="api-select-bar">
+    <div class="api-select-title-icon">
+        <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </div>
+    <span class="api-select-title">全部</span>                                                                                                                                                                                                                                                                                                                  </span>
+    <div class="api-search">
+        <input type="text" id="api-keyword" name="api-keyword" placeholder="输入想要检索的API"  v-model="apiName">
+        <div id="api-search-button" class="search-btn">
+            <span class="glyphicon glyphicon-search" @click="getApiByName"></span>
+        </div>
+    </div>
+    <div class="select-type-bar">
+        <div class="select-type-group">
+            <span class="select-type">排序:</span>
+            <a href="" class="select-type-name  selected">综合</a>
+            <a href="" class="select-type-name">最新</a>
+            <a href="" class="select-type-name">热门</a>
+        </div>
+        <div class="select-type-group">
+            <span class="select-type">付费类型:</span>
+            <a href="" class="select-type-name  selected">全部</a>
+            <a href="" class="select-type-name">免费</a>
+            <a href="" class="select-type-name">收费</a>
+        </div>
+    </div>
+</div>
+<ul class="api-list-ul">
+<li class="api-list-li"  v-cloak v-for="(item, index) of apiList">
+        <div class="api-info">
+            <a href="#" target="_blank" rel="noopener noreferrer" :title="item.apiName+'接口'">
+                <h2 class="api-name">{{item.apiName}}</h2>
+            </a>
+            <div class="api-price">{{item.outline}}
+            </div>
+        </div>
+    <a class="api-get-btn" href="">申请数据</a>
+</li>
+
+</ul>
+
+</div>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-link">
+            <dl>
+                <dt>关于我们</dt>
+                <dd><a href="" target="_blank" rel="noopener noreferrer">服务条款</a></dd>
+                <dd><a href="" target="_blank" rel="noopener noreferrer">隐私政策</a></dd>
+            </dl>
+            <dl>
+                <dt>支持</dt>
+                <dd><a href="" target="_blank" rel="noopener noreferrer">博客</a></dd>
+                <dd><a href="" target="_blank" rel="noopener noreferrer">用户讨论QQ群</a></dd>
+            </dl>
+            <dl>
+                <dt>联系我们</dt>
+                <dd><a href="" target="_blank" rel="noopener noreferrer">联系电话</a></dd>
+                <dd><a href="" target="_blank" rel="noopener noreferrer">常见问题</a></dd>
+                <dd><a href="" target="_blank" rel="noopener noreferrer">投诉与建议</a></dd>
+            </dl>
+            <dl>
+                <dt>解决方案</dt>
+                <dd><a href="" target="_blank" rel="noopener noreferrer">金融征信解决方案</a></dd>
+                <dd><a href="" target="_blank" rel="noopener noreferrer">商业地产分析</a></dd>
+            </dl>
+        </div>
+        <div class="footer-img">
+            <img src="./images/smile.jpg" alt=""/>
+        </div>
+    </div>
+</footer>
+</div>
+</body>
+<script src="js/common_js/pageTransition.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	Vue.http.options.emulateHTTP = true;
+			Vue.http.options.headers = {
+    			'authToken':localStorage.getItem('token')
+			}  
+		
+			var vm = new Vue({
+				el: '#myall',
+				data: {					
+					apiId:'',
+					apiName:'',
+					apiType:'',
+					apiAdress:"",
+					protocol:"",
+					requestType:"",
+					requestDataFormat:"",
+					returnDataFormat:"",
+					outline:"",                  //概要说明
+					time:"",                    //录入时间
+					status:"测试通过",                   //审核状态
+					publisher:"admin",
+					reviewer:"",
+                    apiList:[]         //显示的apilist
+				},
+				mounted: function() {
+						this.getAllAPI();
+					},
+				methods: {
+					//请求api的函数
+					getApiByStr:function(str){
+						this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/api/getApi',
+						{status:str},
+						
+						{emulateJSON: true}
+					).then(
+							function(data){
+								console.log(data.body);
+								this.getMyApiList(data.body);
+						},
+						function(){
+							alert("获取公共API失败！请稍后重试！");
+						}
+						);
+					},
+					
+			
+					//1.所有公共的API
+                      getAllAPI:function(){
+					 this.getApiByStr(this.status);
+				 	},
+					
+					//2.获取某类型的api
+					getApiByType: function(str){
+						this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/api/getApi',
+						{apiType:str},
+						
+						{emulateJSON: true}
+						).then(function(data) {
+							console.log(data);
+							this.getMyApiList(data.body);
+						}, 
+						function(res) {
+							alert("获取自己录入API失败！请稍后重试！");
+						}
+						);
+					},
+					//3.模糊搜索api
+					getApiByName: function(){
+						this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/api/getApi',
+						{apiName:this.apiName},
+						
+						{emulateJSON: true}
+						).then(function(data) {
+							console.log(data);
+						    this.getMyApiList(data.body);
+						}, 
+						function(res) {
+							alert("获取自己录入API失败！请稍后重试！");
+						}
+						);
+					},
+					
+					//4.获取apilist
+					getMyApiList: function(data){
+						if(data.length == 0){
+								alert("暂无数据");
+								return;
+							}
+							//操作返回的api数据列表
+							$.each(data, function(index) {
+							data[index].time = new Date(data[index].time).format('yyyy-MM-dd');
+						});
+							this.apiList = data;
+					}
+					
+				}
+		});
+		//5.转化为标准日期
+		            Date.prototype.format=function(format) 	
+      	    	  {
+      	    	  var o = {
+      	    	  "M+" : this.getMonth()+1, //month
+      	    	  "d+" : this.getDate(), //day
+      	    	  "h+" : this.getHours(), //hour
+      	    	  "m+" : this.getMinutes(), //minute
+      	    	  "s+" : this.getSeconds(), //second
+      	    	  "q+" : Math.floor((this.getMonth()+3)/3), //quarter
+      	    	  "S" : this.getMilliseconds() //millisecond
+      	    	  }
+      	    	  if(/(y+)/.test(format)) format=format.replace(RegExp.$1,
+      	    	  (this.getFullYear()+"").substr(4- RegExp.$1.length));
+      	    	  for(var k in o)if(new RegExp("("+ k +")").test(format))
+      	    	  format = format.replace(RegExp.$1,
+      	    	  RegExp.$1.length==1? o[k] :
+      	    	  ("00"+ o[k]).substr((""+ o[k]).length));
+      	    	  return format;
+      	    	  }
+</script>
+</html>

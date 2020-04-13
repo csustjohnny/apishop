@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>审核管理</title>
+		<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/assessorPageCss.css" />
+		<script src="lib/jquery/jquery.min.js"></script>
+		<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+		<script src="js/assessorJs.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/myVue.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		<style type="text/css">
+			[v-cloak]:{
+				display: none;
+			}
+			.overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 6;
+				background: rgba(0, 0, 0, 0.7);
+			}
+			
+			.overlay td:first-child {
+				width: 66px;
+			}
+			
+			.overlay .con {
+				position: absolute;
+				width: 620px;
+				min-height: 300px;
+				background: #fff;
+				left: 50%;
+				top: 50%;
+				-webkit-transform: translate3d(-50%, -50%, 0);
+				transform: translate3d(-50%, -50%, 0);
+				/*margin-top: -150px;*/
+				padding: 20px;
+			}
+
+		</style>
+	</head>
+	
+	<body>
+		<!--
+        	橫向導航欄
+        -->
+		<div id="myall">
+			
+			<div id="x-nav">
+				<img src="img/image002.png" width="100" />
+				<span style="border-left: 1px solid #bbb;">&nbsp;审核管理</span>
+				<ul class="setting">
+					<li>
+						<span class="glyphicon glyphicon-bell">消息</span>
+
+					</li>
+					<li>
+						<a href="index.html"><span class="glyphicon glyphicon-log-out" >退出</span></a>
+
+					</li>
+
+				</ul>
+
+			</div>
+			<!--
+    搜索框
+-->
+			<div class="searchNav">
+				<ul class="navItem">
+					<li>
+						<p><span class="glyphicon glyphicon-user"></span>欢迎审核用户：XXX</p>
+					</li>
+					<li style="float: right;">
+						<button class="btn btn-xs glyphicon glyphicon-refresh"></button>
+					</li>
+				</ul>
+
+			</div>
+
+			<div class="searchDiv">
+
+				<!--搜索输入框及查询、重置按钮-->
+				<div class="container search_box">
+
+					<div class="search_input">
+						<div class="col-lg-12 input-group">
+							<span>录入用户名称：</span>
+							<input id="searchUserName" type="text" v-model="publisher" class="form-control" placeholder="">
+						</div>
+					</div>
+
+					<div class="search_input">
+						<div class="input-group col-lg-12">
+							<span>api名称：</span>
+							<input id="searchApiName" type="text" v-model="apiName" class="form-control" placeholder="">
+						</div>
+					</div>
+
+					<div class="search_input">
+						<div class="col-lg-12 input-group">
+							<span>类别名：</span>
+							<select name="classname" v-model="apiType" class="form-control">
+								<!--之后考虑写个vue方法 获取一下 增加可延伸性与灵活性 -->
+								<option value="jn">生活常用</option>
+								<option value="jn">车辆服务</option>
+								<option value="jn">金融征信</option>
+								<option value="jn">位置服务</option>
+								<option value="jn">即时通讯</option>
+								<option value="jn">应用开发</option>
+								<option value="jn">旅游出行</option>
+								<option value="jn">人工智能</option>
+								<option value="jn">文娱体育</option>
+								<option value="jn">充值缴费</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="search_input">
+						<div class="col-lg-12 input-group">
+							<span>审核状态：</span>
+							<select name="" class="form-control" v-model="status">
+								<option value="未审核">未审核</option>
+								<option value="审核通过">审核通过</option>
+								<option value="审核失败">审核失败</option>
+							</select>
+						</div>
+					</div>
+					<div class="search_input search_button">
+						<button class="btn btn-primary search_btn" type="button" id="search_btn" @click="getApi">查询</button>
+					</div>
+
+				</div>
+
+			</div>
+
+			<!--
+            查詢結果：
+        -->
+			<div class="searchNav">
+				<ul class="navItem">
+					<li>
+						<p><span class="glyphicon glyphicon-list-alt"></span>已为您查询到如下结果：</p>
+					</li>
+					<li style="float: right;">
+						<button class="btn btn-xs glyphicon glyphicon-refresh"></button>
+					</li>
+				</ul>
+
+			</div>
+			
+			<!--
+            結果列表：
+        -->
+        	<up-model :apilist="selectedApi" :isActive="isUpdateActive" @change="changeUpdate()"></up-model>
+			<div class="checkInfo">
+				<table class="table table-hover" id="checkList">
+					<tr>
+						<th>
+						
+						</th>
+						<th>apiId</th>
+						<th>用户名称</th>
+						<th>api名称</th>
+						<th>类别名</th>
+						<th>录入时间</th>
+						<th>状态</th>
+						<th>操作</th>
+					</tr>
+
+					<tr v-cloak v-for="(item, index) of apiList">
+						<td>
+							<input type="checkbox" v-model="idList" :value="item.id" class="check" />
+						</td>
+						<td>{{item.id}}</td>
+						<td>{{item.publisher}}</td>
+						<td>{{item.apiName}}</td>
+						<td>{{item.apiType}}</td>
+						<td>{{item.time}}</td>
+						<td>
+							<span class="label label-success">{{item.status}}</span>
+							<!--<span class="label label-danger">审核失败</span>-->
+						</td>
+						<td>
+							<div class="btn-group btn-group-xs">
+								<button  @click="showUpdate(index)" type="button" class="btn btn-default detailBtn"><span class="glyphicon glyphicon-list"></span>查看详情</button>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<hr />
+				
+				<div class="btn-group">
+					<button type="button" class="btn btn-default" id="pass" @click="updateApiStatus('审核通过')">通过审核</button>
+					<button type="button" class="btn btn-default" id="fail" @click="updateApiStatus('审核失败')">不通过审核</button>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script>
+		Vue.http.options.emulateHTTP = true;
+			Vue.http.options.headers = {
+    			'authToken':localStorage.getItem('token')
+			}  
+		new Vue({
+			el: '#myall',
+			data: {
+				apiId: '',
+				idList: [],    //apiid组成 list
+				apiName: '',
+				apiType: '',
+				apiAdress: "",
+				protocol: "",
+				requestType: "",
+				requestDataFormat: "",
+				returnDataFormat: "",
+				outline: "", //概要说明
+				time: "", //录入时间
+				status: "未审核", //审核状态
+				publisher: "",
+				reviewer: "",
+				apiList: [], //显示的apilist
+				selectedApi: {},
+				isUpdateActive: false
+			},
+			mounted: function() {
+				this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/api/getApi', {
+					status: this.status,
+				}, 
+				
+				{
+					emulateJSON: true
+				}).then(
+					function(data) {
+						console.log(data.body);
+						this.getMyApiList(data.body);
+					},
+					function() {
+						alert("获取API失败！请稍后重试！");
+					}
+				);
+			},
+			methods: {
+				//1.请求api的函数
+				getApi: function() {
+					this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/api/getApi', {
+						status: this.status,
+						publisher: this.publisher,
+						apiName: this.apiName,
+						apiType: this.apiType
+					}, 
+					
+					{
+						emulateJSON: true
+					}).then(
+						function(data) {
+							console.log(data.body);
+							this.getMyApiList(data.body);
+						},
+						function() {
+							alert("获取API失败！请稍后重试！");
+						}
+					);
+				},
+
+				//2.获取apilist
+				getMyApiList: function(data) {
+					if(data.length == 0) {
+						alert("暂无数据");
+						return;
+					}
+					//操作返回的api数据列表
+					$.each(data, function(index) {
+						data[index].time = new Date(data[index].time).format('yyyy-MM-dd');
+					});
+					this.apiList = data;
+				},
+
+				//3. 修改api的审核状态
+				updateApiStatus: function(str) {
+					this.$http.post('http://csust.ngrok.xiaomiqiu.cn/apishop/api/checkApi', {
+						aids: this.idList,
+						status: str
+					}, 
+					
+					{
+						emulateJSON: true
+					}).then(function(data) {
+							console.log(data);
+                            alert(data.bodyText);
+						},
+						function(res) {
+							alert("修改API审核状态失败！请稍后重试！");
+						}
+					);
+				},
+				showUpdate: function(index){
+					this.selectedApi = JSON.parse(JSON.stringify(this.apiList[index]));
+					this.changeUpdate();
+				},
+				changeUpdate: function(){
+					this.isUpdateActive = !this.isUpdateActive;
+				}
+
+			}
+		})
+
+		//4.转化为标准日期
+		Date.prototype.format = function(format) {
+			var o = {
+				"M+": this.getMonth() + 1, //month
+				"d+": this.getDate(), //day
+				"h+": this.getHours(), //hour
+				"m+": this.getMinutes(), //minute
+				"s+": this.getSeconds(), //second
+				"q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+				"S": this.getMilliseconds() //millisecond
+			}
+			if(/(y+)/.test(format)) format = format.replace(RegExp.$1,
+				(this.getFullYear() + "").substr(4 - RegExp.$1.length));
+			for(var k in o)
+				if(new RegExp("(" + k + ")").test(format))
+					format = format.replace(RegExp.$1,
+						RegExp.$1.length == 1 ? o[k] :
+						("00" + o[k]).substr(("" + o[k]).length));
+			return format;
+		}
+         
+         //模拟框
+		Vue.component('up-model', {
+			props: [ 'apilist', 'isactive'],
+			template: `<div class="overlay" v-show="isactive">
+                        <div class="con">
+                        <h2 class="title">api详情 </h2>
+                        <div class="content">
+                        <table class="table modal-table">
+                        <tbody class="detailBox" >
+						<tr class="detail">
+							<th colspan="1">接口地址</th>
+							<td colspan="3">{{apilist.apiAdress}}</td>
+							<th colspan="1">请求协议</th>
+							<td colspan="2">{{apilist.protocol}}</td>
+						</tr>
+						<tr class="detail">
+							<th colspan="1">请求方式</th>
+							<td colspan="3">{{apilist.requestType}}</td>
+							<th colspan="1">请求格式</th>
+							<td colspan="2">{{apilist.requestDataFormat}}</td>
+						</tr>
+						<tr class="detail">
+							<th colspan="1">返回格式</th>
+							<td colspan="3">{{apilist.returnDataFormat}}</td>
+							<th colspan="1">概要说明：</th>
+							<td colspan="2">{{apilist.outline}}</td>
+						</tr>
+						</tbody>
+                        </table>
+
+                        <p align="center">
+                        <input type="button" @click="changeActive" value="关闭">
+                        </p>
+                        </div>
+                        </div>
+                </div>`,
+			computed: {
+				User() {
+					return this.user;
+				}
+			},
+			methods: {
+				changeActive() {
+					this.$emit('change');
+				}
+			}
+		});
+	
+	</script>
+
+</html>
