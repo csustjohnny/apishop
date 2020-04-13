@@ -43,14 +43,14 @@ location / {
 
 7、测试：首先访问8080端口
 
-![8080](\img\8080.png)
+![8080](img/8080.png)
 
 然后是8111端口
 
-![8081](\img\8081.png)
+![8081](img/8081.png)
 
 最后是8888端口：
 
-![8888端口](\img\8888.png)
+![8888端口](img/8888.png)
 
 8、1，session共享问题：本项目采用重写shiro的EnterpriseCacheSessionDAO方式使用redis缓存sessionid，达到session共享的目的。
